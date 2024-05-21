@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 
-public class prout extends JFrame {
+public class Hello extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -20,7 +20,7 @@ public class prout extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					prout frame = new prout();
+					Hello frame = new Hello();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -32,7 +32,7 @@ public class prout extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public prout() {
+	public Hello() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -40,9 +40,12 @@ public class prout extends JFrame {
 
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("prout");
+		JLabel lblNewLabel = new JLabel("hello world");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Ulysse");
+		contentPane.add(lblNewLabel_1);
 	}
 
 }
