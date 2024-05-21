@@ -41,9 +41,14 @@ public class Fromages {
 		return enForme.toString();
 	}
 
-	// A compléter !
 	public List<Fromage> fromagesAuLaitDe(TypeLait lait) {
-		return null;
+		List<Fromage> fromages = new LinkedList<>();
+		for (Fromage f : this.fromages) {
+			if (f.getTypeFromage() == lait) {
+				fromages.add(f);
+			}
+		}
+		return fromages;
 	}
 
 	public List<Fromage> getFromages() {
