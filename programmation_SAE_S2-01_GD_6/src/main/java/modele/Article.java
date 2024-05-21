@@ -6,6 +6,8 @@ public class Article {
 	private String clé;
 	private float prixTTC;
 	private int quantitéEnStock;
+	
+	//test charif
 
 	public Article(Fromage fromage, String clé, float prixTTC) {
 		this.fromage = fromage;
