@@ -39,6 +39,16 @@ public class Article {
 	public void setQuantitéEnStock(int quantitéEnStock) {
 		this.quantitéEnStock = quantitéEnStock;
 	}
+	
+	// WARNING
+	public void préEmpterQuantité(int quantité) {
+		this.quantitéEnStock -= quantité;
+	}
+	
+	// LOGIQUE A VERIFIER
+	public void rendreQuantité(int quantité) {
+		this.quantitéEnStock += quantité;
+	}
 
 	@Override
 	public String toString() {
