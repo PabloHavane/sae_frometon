@@ -11,6 +11,7 @@ public class Article {
 	//test Ulysse
 	//test branche Oscar
 	//test commit kraken
+	//test merge
 
 	public Article(Fromage fromage, String clé, float prixTTC) {
 		this.fromage = fromage;
