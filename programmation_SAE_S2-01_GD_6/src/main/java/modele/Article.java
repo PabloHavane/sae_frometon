@@ -9,6 +9,7 @@ public class Article {
 	
 	//test charif
 	//test Ulysse
+	//test branche Oscar
 
 	public Article(Fromage fromage, String clé, float prixTTC) {
 		this.fromage = fromage;
