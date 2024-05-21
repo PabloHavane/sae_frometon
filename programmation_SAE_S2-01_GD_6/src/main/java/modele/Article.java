@@ -8,6 +8,7 @@ public class Article {
 	private int quantitéEnStock;
 	
 	//test charif
+	//test Ulysse
 
 	public Article(Fromage fromage, String clé, float prixTTC) {
 		this.fromage = fromage;
