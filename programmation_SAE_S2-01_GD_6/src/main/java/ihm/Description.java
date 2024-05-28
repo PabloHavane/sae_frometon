@@ -65,7 +65,7 @@ public class Description extends JFrame {
 		panelImage.add(lblNewLabel);
 		
 		JLabel lblImage = new JLabel("New label");
-		lblImage.setIcon(new ImageIcon(Description.class.getResource("/junit/runner/logo.gif")));
+		lblImage.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur200\\bleu_d_auvergne.jpg"));
 		panelImage.add(lblImage);
 		
 		JPanel panelDescription = new JPanel();
