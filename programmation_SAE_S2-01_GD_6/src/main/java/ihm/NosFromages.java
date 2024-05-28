@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,6 +27,7 @@ import javax.swing.border.TitledBorder;
 
 import modele.Fromage;
 import modele.Fromages;
+import modele.GenerationFromages;
 import modele.TypeLait;
 
 public class NosFromages extends JFrame {
@@ -66,11 +69,14 @@ public class NosFromages extends JFrame {
         JScrollPane scrollPane = new JScrollPane();
         contentPane.add(scrollPane);
 
-        listFromages = new JList<>();
+        // Ajouter le nom des fromages dans la liste
+        Fromages listingFromages = GenerationFromages.générationBaseFromages();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (Fromage fromage : listingFromages.getFromages()) {
+            listModel.addElement(fromage.getDésignation());
+        }
+		JList<String> listFromages = new JList<>(listModel);
         scrollPane.setViewportView(listFromages);
-
-        listFromages.setListData(fromages.getFromages().stream()
-                .map(Fromage::getDésignation).toArray(String[]::new));
 
         listFromages.addMouseListener(new MouseAdapter() {
             @Override
@@ -129,7 +135,7 @@ public class NosFromages extends JFrame {
         JPanel panel_1 = new JPanel();
         panel_1.setBorder(new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Filtre", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
         bas.add(panel_1);
-        panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 40, 0));
+        panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 0));
 
         JLabel lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromage.png"));
