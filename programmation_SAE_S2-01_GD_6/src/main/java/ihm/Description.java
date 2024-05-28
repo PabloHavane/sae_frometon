@@ -25,29 +25,16 @@ import javax.swing.JButton;
 import java.awt.CardLayout;
 import javax.swing.JSplitPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Description extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
 	private Fromage fromage;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Description frame = new Description();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the frame.
@@ -70,12 +57,16 @@ public class Description extends JFrame {
 		JPanel panelComboSpin = new JPanel();
 		panelClic.add(panelComboSpin);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		panelComboSpin.add(comboBox_1);
+		DefaultComboBoxModel<String> modele = new DefaultComboBoxModel<>();
+        for (int i = 0; i <this.fromage.getArticles().size(); i++) {
+            modele.addElement(this.fromage.getArticles().get(i).toString());
+        }
+        JComboBox<String> comboBox = new JComboBox<>(modele);   
+		panelComboSpin.add(comboBox);
 		
-		JSpinner spinner_1 = new JSpinner();
-		spinner_1.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
-		panelComboSpin.add(spinner_1);
+		JSpinner spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+		panelComboSpin.add(spinner);
 		
 		JPanel panelBtn = new JPanel();
 		panelClic.add(panelBtn);
@@ -84,6 +75,7 @@ public class Description extends JFrame {
 		panelBtn.add(btnAjoutPanier);
 		
 		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addActionListener(annulationFermetureFen());
 		panelBtn.add(btnAnnuler);
 		
 		JPanel panelImgDesc = new JPanel();
@@ -94,7 +86,8 @@ public class Description extends JFrame {
 		panelImgDesc.add(panelImage);
 		panelImage.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblNomFromage = new JLabel("Le frometon");
+		JLabel lblNomFromage = new JLabel("");
+		lblNomFromage.setText(this.fromage.getDésignation());
 		lblNomFromage.setForeground(new Color(255, 128, 0));
 		lblNomFromage.setVerticalAlignment(SwingConstants.TOP);
 		lblNomFromage.setHorizontalAlignment(SwingConstants.CENTER);
@@ -103,18 +96,28 @@ public class Description extends JFrame {
 		
 		JLabel lblImage = new JLabel("");
 		lblImage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImage.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur200\\bleu_d_auvergne.jpg"));
+		lblImage.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur200\\" + this.fromage.getNomImage() + ".jpg"));
 		panelImage.add(lblImage, BorderLayout.CENTER);
 		
 		JPanel panelDescription = new JPanel();
 		panelDescription.setBorder(new TitledBorder(null, "Description", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 64, 0)));
 		panelImgDesc.add(panelDescription);
-		panelDescription.setLayout(new CardLayout(0, 0));
+		panelDescription.setLayout(new CardLayout(2, 2));
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		panelDescription.add(textField, "name_1182977687405300");
+		JTextArea textArea = new JTextArea();
+		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setText(this.fromage.getDescription());
+		panelDescription.add(textArea, "name_1190427149665900");
+	}
+
+	private ActionListener annulationFermetureFen() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		};
 	}
 
 }

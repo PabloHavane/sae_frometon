@@ -34,10 +34,13 @@ import modele.TypeLait;
 public class NosFromages extends JFrame {
 
     private static final long serialVersionUID = 1L;
+    private static final Fromages LISTING_ALL_FROMAGES = GenerationFromages.générationBaseFromages();
+    
     private JPanel contentPane;
     private JComboBox<String> comboBoxType;
     private JList<String> listFromages;
     private Fromages fromages;
+    private String typeCourant;
 
     /**
      * Launch the application.
@@ -60,7 +63,7 @@ public class NosFromages extends JFrame {
      */
     public NosFromages() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 300);
+        setBounds(100, 100, 452, 424);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -71,16 +74,15 @@ public class NosFromages extends JFrame {
         contentPane.add(scrollPane);
 
         // Ajouter le nom des fromages dans la liste
-        Fromages listingTousLesFromages = GenerationFromages.générationBaseFromages();
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        for (Fromage fromage : listingTousLesFromages.getFromages()) {
+        for (Fromage fromage : LISTING_ALL_FROMAGES.getFromages()) {
             listModel.addElement(fromage.getDésignation());
         }
-		JList<String> listFromages = new JList<>(listModel);
+		listFromages = new JList<>(listModel);
         scrollPane.setViewportView(listFromages);
         
         // Ouvrir une fenetre Description
-        listFromages.addMouseListener(ouvrirFromageDescription(listingTousLesFromages, listFromages));
+        listFromages.addMouseListener(ouvrirFromageDescription(LISTING_ALL_FROMAGES, listFromages));
 
         JPanel haut = new JPanel();
         contentPane.add(haut, BorderLayout.NORTH);
@@ -134,6 +136,13 @@ public class NosFromages extends JFrame {
         for (TypeLait t : TypeLait.values()) {
             this.comboBoxType.addItem(t.getTypeDeLait());
         }
+        comboBoxType.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String typeLaitSelec = (String) comboBoxType.getSelectedItem();
+        		typeCourant = typeLaitSelec;
+        		majListeFromage();
+        	}
+        });
         panel_1.add(this.comboBoxType);
 
         JButton Bouton = new JButton("Quitter");
@@ -145,6 +154,19 @@ public class NosFromages extends JFrame {
                 System.exit(0);
             }
         });
+    }
+    
+    private void majListeFromage() {
+    	DefaultListModel<String> listModel = (DefaultListModel<String>) listFromages.getModel();
+    	listModel.clear();
+    	
+    	for (Fromage fromage : LISTING_ALL_FROMAGES.getFromages()) {
+    		if (typeCourant.equals("Tous les fromages") || fromage.getTypeFromage().getTypeDeLait().equals(typeCourant)) {
+    			listModel.addElement(fromage.getDésignation());
+    		}
+        }
+    	
+    	listFromages = new JList<>(listModel);
     }
 
 	private MouseAdapter ouvrirFromageDescription(Fromages listingFromages, JList<String> listFromages) {

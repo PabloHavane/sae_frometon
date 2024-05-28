@@ -53,11 +53,13 @@ public class Article {
 	@Override
 	public String toString() {
 		if (this.clé.equals("")) {
-			return this.fromage.getDésignation() + ", Prix TTC : "
-			        + this.getPrixTTC() + " €";
+//			return this.fromage.getDésignation() + ", Prix TTC : "
+//			        + this.getPrixTTC() + " €";
+			return "Prix TTC : " + this.getPrixTTC() + " €";
 		} else {
-			return this.fromage.getDésignation() + ", " + this.clé
-			        + ", Prix TTC : " + this.getPrixTTC() + " €";
+//			return this.fromage.getDésignation() + ", " + this.clé
+//			        + ", Prix TTC : " + this.getPrixTTC() + " €";
+			return this.clé + ", Prix TTC : " + this.getPrixTTC() + " €";
 		}
 	}
 
