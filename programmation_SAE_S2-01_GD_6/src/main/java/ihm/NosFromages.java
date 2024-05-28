@@ -15,6 +15,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -70,29 +71,16 @@ public class NosFromages extends JFrame {
         contentPane.add(scrollPane);
 
         // Ajouter le nom des fromages dans la liste
-        Fromages listingFromages = GenerationFromages.générationBaseFromages();
+        Fromages listingTousLesFromages = GenerationFromages.générationBaseFromages();
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        for (Fromage fromage : listingFromages.getFromages()) {
+        for (Fromage fromage : listingTousLesFromages.getFromages()) {
             listModel.addElement(fromage.getDésignation());
         }
 		JList<String> listFromages = new JList<>(listModel);
         scrollPane.setViewportView(listFromages);
-
-        listFromages.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    String selectedValue = listFromages.getSelectedValue();
-                    Fromage fromageSelectionnee = fromages.getFromages().stream()
-                            .filter(f -> f.getDésignation().equals(selectedValue))
-                            .findFirst()
-                            .orElse(null);
-                    if (fromageSelectionnee != null) {
-                        listFromages.setVisible(true);
-                    }
-                }
-            }
-        });
+        
+        // Ouvrir une fenetre Description
+        listFromages.addMouseListener(ouvrirFromageDescription(listingTousLesFromages, listFromages));
 
         JPanel haut = new JPanel();
         contentPane.add(haut, BorderLayout.NORTH);
@@ -122,7 +110,7 @@ public class NosFromages extends JFrame {
 
         btnPanier.setBackground(new Color(255, 128, 0));
         btnPanier.setForeground(new Color(0, 0, 0));
-        btnPanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Image_Pasted_2023-23-05_at_16.45.png"));
+        btnPanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\panier.png"));
 
         btnPanier.setHorizontalAlignment(SwingConstants.RIGHT);
         btnPanier.setBounds(new Rectangle(20, 0, 0, 0));
@@ -158,4 +146,26 @@ public class NosFromages extends JFrame {
             }
         });
     }
+
+	private MouseAdapter ouvrirFromageDescription(Fromages listingFromages, JList<String> listFromages) {
+		return new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	Fromage fromageDesc = null;
+                if (e.getClickCount() == 2) {
+                    String selectedValue = listFromages.getSelectedValue();
+                    for (Fromage fromage : listingFromages.getFromages()) {
+                        if (fromage.getDésignation() == selectedValue) {
+                        	fromageDesc = fromage;
+                        }
+                    }
+                    if (fromageDesc != null) {
+                    	Description description = new Description(fromageDesc);
+	                    description.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	                    description.setVisible(true);
+                    }
+                }
+            }
+        };
+	}
 }
