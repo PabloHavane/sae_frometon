@@ -26,6 +26,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
 import java.awt.CardLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VotrePanier extends JFrame {
 
@@ -36,6 +40,7 @@ public class VotrePanier extends JFrame {
 	private JTextField textFieldTotal;
 	private DefaultTableModel modeleTable;
 	private JTable table;
+	private Panier panier;
 
 	/**
 	 * Launch the application.
@@ -44,7 +49,7 @@ public class VotrePanier extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VotrePanier frame = new VotrePanier();
+					VotrePanier frame = new VotrePanier(new Panier());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,7 +61,8 @@ public class VotrePanier extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VotrePanier() {
+	public VotrePanier(Panier panier) {
+		this.panier = panier;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 634, 412);
@@ -101,7 +107,7 @@ public class VotrePanier extends JFrame {
 		panel_total.setAlignmentY(0.0f);
 		panel_total.setAlignmentX(1.0f);
 		panel_2.add(panel_total, BorderLayout.CENTER);
-		panel_total.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel_total.setLayout(new GridLayout(1, 2, 0, 0));
 		
 		JPanel panelTransporteur = new JPanel();
 		panelTransporteur.setForeground(Color.BLACK);
@@ -119,25 +125,29 @@ public class VotrePanier extends JFrame {
 		panelTransporteur.add(panelChoixTrans);
 		
 		JLabel lblIconeTransporteur = new JLabel();
+		lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
 		panelChoixTrans.add(lblIconeTransporteur);
 		
-		JComboBox comboBoxTransporteur = new JComboBox();
+		JComboBox<String> comboBoxTransporteur = new JComboBox<String>();
+		comboBoxTransporteur.addActionListener(changementIconeTransporteur(lblIconeTransporteur, comboBoxTransporteur));
+		comboBoxTransporteur.setModel(new DefaultComboBoxModel(new String[] {"Colissimo", "Chronofresh", "Chronorelais"}));
 		panelChoixTrans.add(comboBoxTransporteur);
 		
-		JPanel panel_5 = new JPanel();
-		panel_total.add(panel_5);
-		panel_5.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panelPrix = new JPanel();
+		panel_total.add(panelPrix);
+		panelPrix.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JPanel panelSousTotal = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panelSousTotal.getLayout();
 		flowLayout_1.setAlignment(FlowLayout.RIGHT);
-		panel_5.add(panelSousTotal);
+		panelPrix.add(panelSousTotal);
 		
 		JLabel lblSousTotal = new JLabel("Sous-total :");
 		lblSousTotal.setFont(UIManager.getFont("Label.font"));
 		panelSousTotal.add(lblSousTotal);
 		
 		textFieldSousTotal = new JTextField();
+		textFieldSousTotal.setBackground(new Color(254, 250, 216));
 		textFieldSousTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldSousTotal.setEditable(false);
 		textFieldSousTotal.setColumns(10);
@@ -146,7 +156,7 @@ public class VotrePanier extends JFrame {
 		JPanel panelExpedition = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panelExpedition.getLayout();
 		flowLayout_3.setAlignment(FlowLayout.RIGHT);
-		panel_5.add(panelExpedition);
+		panelPrix.add(panelExpedition);
 		
 		JLabel lblExpedition = new JLabel("Expédition :");
 		lblExpedition.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -154,6 +164,7 @@ public class VotrePanier extends JFrame {
 		panelExpedition.add(lblExpedition);
 		
 		textFieldExpedition = new JTextField();
+		textFieldExpedition.setBackground(new Color(254, 250, 216));
 		textFieldExpedition.setEditable(false);
 		textFieldExpedition.setColumns(10);
 		panelExpedition.add(textFieldExpedition);
@@ -161,16 +172,18 @@ public class VotrePanier extends JFrame {
 		JPanel panelTotal = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panelTotal.getLayout();
 		flowLayout_2.setAlignment(FlowLayout.RIGHT);
-		panel_5.add(panelTotal);
+		panelPrix.add(panelTotal);
 		
 		JLabel lblTotal = new JLabel("TOTAL :");
+		lblTotal.setForeground(new Color(244, 164, 96));
+		lblTotal.setBackground(new Color(255, 255, 255));
 		lblTotal.setFont(UIManager.getFont("Label.font"));
 		panelTotal.add(lblTotal);
 		
 		textFieldTotal = new JTextField();
 		textFieldTotal.setEditable(false);
 		textFieldTotal.setColumns(10);
-		textFieldTotal.setBackground(Color.YELLOW);
+		textFieldTotal.setBackground(new Color(245, 218, 171));
 		panelTotal.add(textFieldTotal);
 		
 		JPanel panel_button = new JPanel();
@@ -181,10 +194,48 @@ public class VotrePanier extends JFrame {
 		panel_button.add(btnValider);
 		
 		JButton btnVider = new JButton("Vider le panier");
+		btnVider.addActionListener(viderPanier());
 		panel_button.add(btnVider);
 		
 		JButton btnContinuer = new JButton("Continuer mes achats");
+		btnContinuer.addActionListener(continuerAchatsFermeturePanier());
 		panel_button.add(btnContinuer);
+	}
+
+	private ActionListener viderPanier() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				model.setRowCount(0);
+			}
+		};
+	}
+
+	private ActionListener continuerAchatsFermeturePanier() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		};
+	}
+
+	private ActionListener changementIconeTransporteur(JLabel lblIconeTransporteur,
+			JComboBox<String> comboBoxTransporteur) {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switch(comboBoxTransporteur.getSelectedIndex()) {
+					case 0 :
+						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
+						break;
+					case 1 :
+						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronofresh.png"));
+						break;
+					case 2 :
+						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronorelais.png"));
+						break;
+				}
+			}
+		};
 	}
 
 }
