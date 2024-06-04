@@ -14,10 +14,13 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.border.TitledBorder;
 
+import modele.Article;
 import modele.Fromage;
+import modele.Panier;
 
 import java.awt.Color;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSpinner;
 import java.awt.FlowLayout;
@@ -29,19 +32,25 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class Description extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private Fromage fromage;
+	private Panier panier;
+	private JSpinner spinner;
+	private JComboBox<String> comboBox;
 
 	/**
 	 * Create the frame.
 	 */
-	public Description(Fromage fromage) {
-		this.fromage = fromage;
-		
+	public Description(Fromage leFromage, Panier lePanier) {
+		this.fromage = leFromage;
+		this.panier = lePanier;
+				
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 400);
 		contentPane = new JPanel();
@@ -58,20 +67,21 @@ public class Description extends JFrame {
 		panelClic.add(panelComboSpin);
 		
 		DefaultComboBoxModel<String> modele = new DefaultComboBoxModel<>();
-        for (int i = 0; i <this.fromage.getArticles().size(); i++) {
-            modele.addElement(this.fromage.getArticles().get(i).toString());
+        for (Article article : this.fromage.getArticles()) {
+            modele.addElement(article.toString());
         }
-        JComboBox<String> comboBox = new JComboBox<>(modele);   
+        comboBox = new JComboBox<>(modele);
 		panelComboSpin.add(comboBox);
 		
-		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+		spinner = new JSpinner();
+		spinner.setModel(new SpinnerNumberModel(1, 1, this.fromage.getArticles().get(0).getQuantitéEnStock(), 1));
 		panelComboSpin.add(spinner);
 		
 		JPanel panelBtn = new JPanel();
 		panelClic.add(panelBtn);
 		
 		JButton btnAjoutPanier = new JButton("Ajouter au panier");
+		btnAjoutPanier.addActionListener(ajoutArticlePanier());
 		panelBtn.add(btnAjoutPanier);
 		
 		JButton btnAnnuler = new JButton("Annuler");
@@ -110,6 +120,27 @@ public class Description extends JFrame {
 		textArea.setLineWrap(true);
 		textArea.setText(this.fromage.getDescription());
 		panelDescription.add(textArea, "name_1190427149665900");
+	}
+
+	private ActionListener ajoutArticlePanier() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String itemSelec = (String) comboBox.getSelectedItem();
+				System.out.println(itemSelec);
+				Article art = null;
+        		for (Article article: fromage.getArticles()) {
+                    if (article.toString().equals(itemSelec)) {
+                    	art = article;
+                    }
+                }
+        		if (art != null) {
+        			panier.ajouterPanier(art, (int) spinner.getValue());
+        		}
+				VotrePanier papanier = new VotrePanier(panier);
+                papanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                papanier.setVisible(true);
+			}
+		};
 	}
 
 	private ActionListener annulationFermetureFen() {

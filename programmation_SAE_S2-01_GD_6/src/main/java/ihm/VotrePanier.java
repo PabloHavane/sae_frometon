@@ -1,4 +1,5 @@
 package ihm;
+import modele.Article;
 import modele.Panier;
 
 import java.awt.EventQueue;
@@ -43,29 +44,13 @@ public class VotrePanier extends JFrame {
 	private Panier panier;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VotrePanier frame = new VotrePanier(new Panier());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public VotrePanier(Panier panier) {
-		this.panier = panier;
+	public VotrePanier(Panier lePanier) {
+		this.panier = lePanier;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 634, 412);
+		setBounds(100, 100, 750, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -90,12 +75,22 @@ public class VotrePanier extends JFrame {
                 new String[] { "Produit", "Prix", "Quantit\u00E9", "Total" });
         this.table = new JTable(new DefaultTableModel(
         	new Object[][] {
-        		{"Image", "frometon", "trop cher", "beaucoup", "energie"},
         	},
         	new String[] {
         		" ", "Produit", "Prix", "Quantit\u00E9", "Total"
         	}
         ));
+        for (Article article : this.panier.getPanier()) {
+        	DefaultTableModel model = (DefaultTableModel) table.getModel();
+        	model.addRow(new Object[] {
+        		new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
+        		article.getFromage().getDésignation() + " " +
+        		article.getClé(),
+        		article.getPrixTTC() + "€",
+        		this.panier.getQuantité(),
+        		this.panier.getMontant()
+        	});
+        }
         this.table.setEnabled(false);
         scrollPane.setViewportView(this.table);
 		
@@ -207,6 +202,7 @@ public class VotrePanier extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				model.setRowCount(0);
+				panier.viderPanier();
 			}
 		};
 	}

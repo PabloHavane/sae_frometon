@@ -29,6 +29,7 @@ import javax.swing.border.TitledBorder;
 import modele.Fromage;
 import modele.Fromages;
 import modele.GenerationFromages;
+import modele.Panier;
 import modele.TypeLait;
 
 public class NosFromages extends JFrame {
@@ -41,8 +42,9 @@ public class NosFromages extends JFrame {
     private JList<String> listFromages;
     private Fromages fromages;
     private String typeCourant;
+    private Panier panier;
 
-    /**
+	/**
      * Launch the application.
      */
     public static void main(String[] args) {
@@ -70,6 +72,8 @@ public class NosFromages extends JFrame {
         contentPane.setLayout(new BorderLayout(0, 0));
 
         fromages = new Fromages();
+        fromages.regénérationDuStock();
+        panier = new Panier();
         JScrollPane scrollPane = new JScrollPane();
         contentPane.add(scrollPane);
 
@@ -103,12 +107,7 @@ public class NosFromages extends JFrame {
         panel.add(lblNewLabel_1);
 
         JButton btnPanier = new JButton("0.00€");
-//        btnPanier.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                VotrePanier frame = new VotrePanier();
-//                frame.setVisible(true);
-//            }
-//        });
+        btnPanier.addActionListener(ouvrirFenVotrePanier());
 
         btnPanier.setBackground(new Color(255, 128, 0));
         btnPanier.setForeground(new Color(0, 0, 0));
@@ -155,6 +154,17 @@ public class NosFromages extends JFrame {
             }
         });
     }
+
+	private ActionListener ouvrirFenVotrePanier() {
+		return new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	if (!panier.isPanierEmpty()) {
+            		VotrePanier frame = new VotrePanier(panier);
+                    frame.setVisible(true);
+            	}
+            }
+        };
+	}
     
     private void majListeFromage() {
     	DefaultListModel<String> listModel = (DefaultListModel<String>) listFromages.getModel();
@@ -182,7 +192,7 @@ public class NosFromages extends JFrame {
                         }
                     }
                     if (fromageDesc != null) {
-                    	Description description = new Description(fromageDesc);
+                    	Description description = new Description(fromageDesc, panier);
 	                    description.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	                    description.setVisible(true);
                     }
