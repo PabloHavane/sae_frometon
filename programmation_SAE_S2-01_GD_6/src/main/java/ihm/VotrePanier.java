@@ -24,15 +24,18 @@ import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
+import java.awt.CardLayout;
 
 public class VotrePanier extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTextField textFieldSousTotal;
+	private JTextField textFieldExpedition;
+	private JTextField textFieldTotal;
+	private DefaultTableModel modeleTable;
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -56,7 +59,7 @@ public class VotrePanier extends JFrame {
 	public VotrePanier() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 634, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -73,113 +76,115 @@ public class VotrePanier extends JFrame {
 		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 26));
 		panel.add(lblNewLabel);
 		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"", "Produit", "Prix", "Quantité", "total"},
-				{"","E","C","D","G"},
-			}, 
-			new String[] {
-				"", "Produit", "Prix", "Quantité", "total"
-			}
-		));
-		table.getColumnModel().getColumn(0).setPreferredWidth(90);
-		panel_1.add(table);
-		
-		JScrollBar scrollBar = new JScrollBar();
-		panel_1.add(scrollBar);
+		JScrollPane scrollPane = new JScrollPane();
+        this.contentPane.add(scrollPane, BorderLayout.CENTER);
+
+        this.modeleTable = new DefaultTableModel(
+                new Object[][] { { "", "", "", "", "" }, { "", "", "", "", "" }, { "", "", "", "", "" }, },
+                new String[] { "Produit", "Prix", "Quantit\u00E9", "Total" });
+        this.table = new JTable(new DefaultTableModel(
+        	new Object[][] {
+        		{"Image", "frometon", "trop cher", "beaucoup", "energie"},
+        	},
+        	new String[] {
+        		" ", "Produit", "Prix", "Quantit\u00E9", "Total"
+        	}
+        ));
+        this.table.setEnabled(false);
+        scrollPane.setViewportView(this.table);
 		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
-		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
+		panel_2.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_2_1 = new JPanel();
-		panel_2_1.setAlignmentY(0.0f);
-		panel_2_1.setAlignmentX(1.0f);
-		panel_2.add(panel_2_1);
+		JPanel panel_total = new JPanel();
+		panel_total.setAlignmentY(0.0f);
+		panel_total.setAlignmentX(1.0f);
+		panel_2.add(panel_total, BorderLayout.CENTER);
+		panel_total.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setForeground(Color.BLACK);
-		panel_4.setBorder(new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Transporteur", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
-		panel_4.setBackground(UIManager.getColor("Button.background"));
-		panel_2_1.add(panel_4);
-		panel_4.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panelTransporteur = new JPanel();
+		panelTransporteur.setForeground(Color.BLACK);
+		panelTransporteur.setBorder(new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Transporteur", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
+		panelTransporteur.setBackground(UIManager.getColor("Button.background"));
+		panel_total.add(panelTransporteur);
+		panelTransporteur.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JLabel lblNewLabel_1 = new JLabel("frais de ports offert à partir de 120€");
-		lblNewLabel_1.setForeground(new Color(255, 128, 0));
-		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 15));
-		panel_4.add(lblNewLabel_1);
+		JLabel lblFdp = new JLabel("Frais de port offert à partir de 120€");
+		lblFdp.setForeground(new Color(0, 0, 0));
+		lblFdp.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panelTransporteur.add(lblFdp);
 		
-		JPanel panel_6 = new JPanel();
-		panel_4.add(panel_6);
+		JPanel panelChoixTrans = new JPanel();
+		panelTransporteur.add(panelChoixTrans);
 		
-		JLabel lblNewLabel_2 = new JLabel();
-		panel_6.add(lblNewLabel_2);
+		JLabel lblIconeTransporteur = new JLabel();
+		panelChoixTrans.add(lblIconeTransporteur);
 		
-		JComboBox comboBox = new JComboBox();
-		panel_6.add(comboBox);
+		JComboBox comboBoxTransporteur = new JComboBox();
+		panelChoixTrans.add(comboBoxTransporteur);
 		
 		JPanel panel_5 = new JPanel();
-		panel_2_1.add(panel_5);
+		panel_total.add(panel_5);
 		panel_5.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panel_7 = new JPanel();
-		panel_5.add(panel_7);
+		JPanel panelSousTotal = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panelSousTotal.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.RIGHT);
+		panel_5.add(panelSousTotal);
 		
-		JLabel lblNewLabel_3 = new JLabel("Sous total");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_7.add(lblNewLabel_3);
+		JLabel lblSousTotal = new JLabel("Sous-total :");
+		lblSousTotal.setFont(UIManager.getFont("Label.font"));
+		panelSousTotal.add(lblSousTotal);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		panel_7.add(textField);
+		textFieldSousTotal = new JTextField();
+		textFieldSousTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldSousTotal.setEditable(false);
+		textFieldSousTotal.setColumns(10);
+		panelSousTotal.add(textFieldSousTotal);
 		
-		JPanel panel_8 = new JPanel();
-		panel_5.add(panel_8);
+		JPanel panelExpedition = new JPanel();
+		FlowLayout flowLayout_3 = (FlowLayout) panelExpedition.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.RIGHT);
+		panel_5.add(panelExpedition);
 		
-		JLabel lblNewLabel_4 = new JLabel("Expédition");
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_8.add(lblNewLabel_4);
+		JLabel lblExpedition = new JLabel("Expédition :");
+		lblExpedition.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblExpedition.setFont(UIManager.getFont("Label.font"));
+		panelExpedition.add(lblExpedition);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		panel_8.add(textField_1);
+		textFieldExpedition = new JTextField();
+		textFieldExpedition.setEditable(false);
+		textFieldExpedition.setColumns(10);
+		panelExpedition.add(textFieldExpedition);
 		
-		JPanel panel_9 = new JPanel();
-		panel_5.add(panel_9);
+		JPanel panelTotal = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panelTotal.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.RIGHT);
+		panel_5.add(panelTotal);
 		
-		JLabel lblNewLabel_5 = new JLabel("Total");
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		panel_9.add(lblNewLabel_5);
+		JLabel lblTotal = new JLabel("TOTAL :");
+		lblTotal.setFont(UIManager.getFont("Label.font"));
+		panelTotal.add(lblTotal);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBackground(Color.YELLOW);
-		panel_9.add(textField_2);
+		textFieldTotal = new JTextField();
+		textFieldTotal.setEditable(false);
+		textFieldTotal.setColumns(10);
+		textFieldTotal.setBackground(Color.YELLOW);
+		panelTotal.add(textFieldTotal);
 		
-		JPanel panel_3 = new JPanel();
-		panel_2.add(panel_3);
+		JPanel panel_button = new JPanel();
+		panel_2.add(panel_button, BorderLayout.SOUTH);
+		panel_button.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnNewButton_1 = new JButton("Valider le panier");
-		btnNewButton_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		panel_3.add(btnNewButton_1);
+		JButton btnValider = new JButton("Valider le panier");
+		panel_button.add(btnValider);
 		
-		JButton btnNewButton_2 = new JButton("Vider le panier");
-		btnNewButton_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		btnNewButton_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		panel_3.add(btnNewButton_2);
+		JButton btnVider = new JButton("Vider le panier");
+		panel_button.add(btnVider);
 		
-		
-		JButton btnNewButton_3 = new JButton("Continuer les achats");
-		btnNewButton_3.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-		panel_3.add(btnNewButton_3);
+		JButton btnContinuer = new JButton("Continuer mes achats");
+		panel_button.add(btnContinuer);
 	}
 
 }
