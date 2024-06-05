@@ -35,36 +35,64 @@ public class Panier {
 		return this.panier.size() == 0;
 	}
 
+//	public void ajouterPanier(Article article, int quantité) {
+//		int indice = 0;
+//		//if ((article.getQuantitéEnStock()) - quantité >= 0) {
+//			for (int i = 0; i < this.panier.size(); i++) {
+//				if (this.panier.get(i).equals(article)) {
+//					indice = i;
+//					this.panier.get(indice).setQuantitéEnStock(this.panier.get(indice).getQuantitéEnStock() - quantité);
+//					this.quantité.set(indice, quantité + this.quantité.get(indice));
+//				}
+//			}
+//			if (indice == 0) {
+//				this.setMontant(this.montant + quantité * article.getPrixTTC());
+//				this.panier.add(article);
+//				this.quantité.add(quantité);
+//				article.setQuantitéEnStock(article.getQuantitéEnStock() - quantité);
+//			}
+//			if (this.panier.size() > 1) {
+//				Article articl = this.panier.get(0);
+//				for (int i = 1; i < this.panier.size(); i++) {
+//					if (articl.equals(this.panier.get(i))) {
+//						this.quantité.set(i, this.quantité.get(0));
+//						article.setQuantitéEnStock(article.getQuantitéEnStock() + quantité);
+//						this.panier.remove(0);
+//						this.quantité.remove(0);
+//						i += this.panier.size();
+//					}
+//				}
+//			}
+//		}
+//	//}
+	
 	public void ajouterPanier(Article article, int quantité) {
-		int indice = 0;
-		//if ((article.getQuantitéEnStock()) - quantité >= 0) {
-			for (int i = 0; i < this.panier.size(); i++) {
-				if (this.panier.get(i).equals(article)) {
-					indice = i;
-					this.panier.get(indice).setQuantitéEnStock(this.panier.get(indice).getQuantitéEnStock() - quantité);
-					this.quantité.set(indice, quantité + this.quantité.get(indice));
-				}
-			}
-			if (indice == 0) {
-				this.setMontant(this.montant + quantité * article.getPrixTTC());
-				this.panier.add(article);
-				this.quantité.add(quantité);
-				article.setQuantitéEnStock(article.getQuantitéEnStock() - quantité);
-			}
-			if (this.panier.size() > 1) {
-				Article articl = this.panier.get(0);
-				for (int i = 1; i < this.panier.size(); i++) {
-					if (articl.equals(this.panier.get(i))) {
-						this.quantité.set(i, this.quantité.get(0));
-						article.setQuantitéEnStock(article.getQuantitéEnStock() + quantité);
-						this.panier.remove(0);
-						this.quantité.remove(0);
-						i += this.panier.size();
-					}
-				}
-			}
-		}
-	//}
+	    if (quantité <= 0) {
+	        return; // Quantité invalide
+	    }
+
+	    // Ajuster la quantité si le stock est insuffisant
+	    int quantitéEffective = Math.min(quantité, article.getQuantitéEnStock());
+
+	    int indice = -1;
+	    for (int i = 0; i < this.panier.size(); i++) {
+	        if (this.panier.get(i).equals(article)) {
+	            indice = i;
+	            break;
+	        }
+	    }
+
+	    if (indice != -1) {
+	        this.quantité.set(indice, this.quantité.get(indice) + quantitéEffective);
+	    } else {
+	        this.panier.add(article);
+	        this.quantité.add(quantitéEffective);
+	    }
+
+	    article.setQuantitéEnStock(article.getQuantitéEnStock() - quantitéEffective);
+	    this.montant += quantitéEffective * article.getPrixTTC();
+	}
+
 
 	public float fraisDeLivraison(String livreur) {
 		if (livreur.equals("Chronofresh")) {
@@ -92,11 +120,12 @@ public class Panier {
 
 	public void viderPanier() {
 		for (int i = 0; i < this.panier.size(); i++) {
-			this.panier.get(i).setQuantitéEnStock(this.quantité.get(i) + this.panier.get(i).getQuantitéEnStock());
+			Article article = this.panier.get(i);
+	        article.setQuantitéEnStock(article.getQuantitéEnStock() + this.quantité.get(i));
 		}
 		this.montant = 0;
-		this.panier = new ArrayList<>();
-		this.quantité = new ArrayList<>();
+		this.panier.clear();
+		this.quantité.clear();
 	}
 
 	public float totalAvecExpedition(String livreur) {
