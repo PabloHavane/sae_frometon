@@ -67,14 +67,26 @@ public class Panier {
 	//}
 
 	public float fraisDeLivraison(String livreur) {
-		if (this.montant < 120.0f) {
-			if (livreur == "chronopost") {
-				return 12.0f;
+		if (livreur.equals("Chronofresh")) {
+			if (this.montant < 50) {
+				return 23.8f;
+			} else if (this.montant < 80) {
+				return 17.8f;
+			} else if (this.montant < 120) {
+				return 9.9f;
 			} else {
-				return 9.0f;
+				return 0f;
 			}
 		} else {
-			return 0.0f;
+			if (this.montant < 60) {
+				return 14.9f;
+			} else if (this.montant < 90) {
+				return 9.9f;
+			} else if (this.montant < 120) {
+				return 4.9f;
+			} else {
+				return 0f;
+			}
 		}
 	}
 

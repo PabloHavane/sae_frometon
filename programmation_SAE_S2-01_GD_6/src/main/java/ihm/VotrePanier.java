@@ -42,6 +42,7 @@ public class VotrePanier extends JFrame {
 	private DefaultTableModel modeleTable;
 	private JTable table;
 	private Panier panier;
+	private JComboBox<String> comboBoxTransporteur;
 
 	/**
 	 * Create the frame.
@@ -80,15 +81,16 @@ public class VotrePanier extends JFrame {
         		" ", "Produit", "Prix", "Quantit\u00E9", "Total"
         	}
         ));
-        for (Article article : this.panier.getPanier()) {
+        for (int i = 0; i < this.panier.getPanier().size(); i++) {
+        	Article article = this.panier.getPanier().get(i);
         	DefaultTableModel model = (DefaultTableModel) table.getModel();
         	model.addRow(new Object[] {
         		new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
         		article.getFromage().getDésignation() + " " +
         		article.getClé(),
-        		article.getPrixTTC() + "€",
-        		this.panier.getQuantité(),
-        		this.panier.getMontant()
+        		article.getPrixTTC() + " €",
+        		this.panier.getQuantité().get(i),
+        		article.getPrixTTC() * this.panier.getQuantité().get(i) + " €"
         	});
         }
         this.table.setEnabled(false);
@@ -123,9 +125,9 @@ public class VotrePanier extends JFrame {
 		lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
 		panelChoixTrans.add(lblIconeTransporteur);
 		
-		JComboBox<String> comboBoxTransporteur = new JComboBox<String>();
-		comboBoxTransporteur.addActionListener(changementIconeTransporteur(lblIconeTransporteur, comboBoxTransporteur));
-		comboBoxTransporteur.setModel(new DefaultComboBoxModel(new String[] {"Colissimo", "Chronofresh", "Chronorelais"}));
+		comboBoxTransporteur = new JComboBox<String>();
+		comboBoxTransporteur.addActionListener(changementIconeTransEtFdp(lblIconeTransporteur, comboBoxTransporteur));
+		comboBoxTransporteur.setModel(new DefaultComboBoxModel(new String[] {"Colissimo", "Chronorelais", "Chronofresh"}));
 		panelChoixTrans.add(comboBoxTransporteur);
 		
 		JPanel panelPrix = new JPanel();
@@ -143,9 +145,10 @@ public class VotrePanier extends JFrame {
 		
 		textFieldSousTotal = new JTextField();
 		textFieldSousTotal.setBackground(new Color(254, 250, 216));
-		textFieldSousTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldSousTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldSousTotal.setEditable(false);
 		textFieldSousTotal.setColumns(10);
+		textFieldSousTotal.setText(this.panier.getMontant() + " €");
 		panelSousTotal.add(textFieldSousTotal);
 		
 		JPanel panelExpedition = new JPanel();
@@ -161,7 +164,9 @@ public class VotrePanier extends JFrame {
 		textFieldExpedition = new JTextField();
 		textFieldExpedition.setBackground(new Color(254, 250, 216));
 		textFieldExpedition.setEditable(false);
+		textFieldExpedition.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldExpedition.setColumns(10);
+		textFieldExpedition.setText(this.panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
 		panelExpedition.add(textFieldExpedition);
 		
 		JPanel panelTotal = new JPanel();
@@ -169,7 +174,7 @@ public class VotrePanier extends JFrame {
 		flowLayout_2.setAlignment(FlowLayout.RIGHT);
 		panelPrix.add(panelTotal);
 		
-		JLabel lblTotal = new JLabel("TOTAL :");
+		JLabel lblTotal = new JLabel("TOTAL A PAYER :");
 		lblTotal.setForeground(new Color(244, 164, 96));
 		lblTotal.setBackground(new Color(255, 255, 255));
 		lblTotal.setFont(UIManager.getFont("Label.font"));
@@ -178,7 +183,9 @@ public class VotrePanier extends JFrame {
 		textFieldTotal = new JTextField();
 		textFieldTotal.setEditable(false);
 		textFieldTotal.setColumns(10);
+		textFieldTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldTotal.setBackground(new Color(245, 218, 171));
+		textFieldTotal.setText(this.panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
 		panelTotal.add(textFieldTotal);
 		
 		JPanel panel_button = new JPanel();
@@ -215,19 +222,25 @@ public class VotrePanier extends JFrame {
 		};
 	}
 
-	private ActionListener changementIconeTransporteur(JLabel lblIconeTransporteur,
+	private ActionListener changementIconeTransEtFdp(JLabel lblIconeTransporteur,
 			JComboBox<String> comboBoxTransporteur) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch(comboBoxTransporteur.getSelectedIndex()) {
 					case 0 :
 						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
+						textFieldExpedition.setText(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
+						textFieldTotal.setText(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
 						break;
 					case 1 :
-						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronofresh.png"));
+						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronorelais.png"));
+						textFieldExpedition.setText(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
+						textFieldTotal.setText(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
 						break;
 					case 2 :
-						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronorelais.png"));
+						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronofresh.png"));
+						textFieldExpedition.setText(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
+						textFieldTotal.setText(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
 						break;
 				}
 			}
