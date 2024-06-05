@@ -11,11 +11,16 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
@@ -58,15 +63,32 @@ public class VotrePanier extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		contentPane.add(panel, BorderLayout.NORTH);
+		JPanel panelTitre = new JPanel();
+		contentPane.add(panelTitre, BorderLayout.NORTH);
+		panelTitre.setLayout(new GridLayout(1, 2, 0, 0));
 		
-		JLabel lblNewLabel = new JLabel("Votre panier");
-		lblNewLabel.setForeground(new Color(255, 128, 64));
-		lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 26));
-		panel.add(lblNewLabel);
+		JPanel panelTitreEtIcone = new JPanel();
+		FlowLayout flowLayout_4 = (FlowLayout) panelTitreEtIcone.getLayout();
+		flowLayout_4.setAlignment(FlowLayout.LEFT);
+		panelTitre.add(panelTitreEtIcone);
+		
+		JLabel lblIconePanier = new JLabel(" ");
+		lblIconePanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\panier.png"));
+		panelTitreEtIcone.add(lblIconePanier);
+
+		JLabel lblTitre = new JLabel("Votre panier");
+		lblTitre.setForeground(new Color(255, 128, 64));
+		lblTitre.setFont(new Font("Comic Sans MS", Font.PLAIN, 26));
+		panelTitreEtIcone.add(lblTitre);
+		
+		JPanel panelRafraichir = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panelRafraichir.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		panelTitre.add(panelRafraichir);
+		
+		JButton btnRafraichir = new JButton("");
+		btnRafraichir.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\rafraichir.png"));
+		panelRafraichir.add(btnRafraichir);
 		
 		JScrollPane scrollPane = new JScrollPane();
         this.contentPane.add(scrollPane, BorderLayout.CENTER);
@@ -81,6 +103,20 @@ public class VotrePanier extends JFrame {
         		" ", "Produit", "Prix", "Quantit\u00E9", "Total"
         	}
         ));
+        
+        // Afficher l'image dans le JTable
+        table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                if (value instanceof ImageIcon) {
+                	JLabel label = new JLabel((ImageIcon) value);
+                    table.setRowHeight(row, ((ImageIcon) value).getIconHeight());
+                    return label;
+                }
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+        });
+        
         for (int i = 0; i < this.panier.getPanier().size(); i++) {
         	Article article = this.panier.getPanier().get(i);
         	DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -92,18 +128,19 @@ public class VotrePanier extends JFrame {
         		this.panier.getQuantité().get(i),
         		article.getPrixTTC() * this.panier.getQuantité().get(i) + " €"
         	});
+        	
         }
         this.table.setEnabled(false);
         scrollPane.setViewportView(this.table);
 		
-		JPanel panel_2 = new JPanel();
-		contentPane.add(panel_2, BorderLayout.SOUTH);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		JPanel panelTotalEtBoutons = new JPanel();
+		contentPane.add(panelTotalEtBoutons, BorderLayout.SOUTH);
+		panelTotalEtBoutons.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_total = new JPanel();
 		panel_total.setAlignmentY(0.0f);
 		panel_total.setAlignmentX(1.0f);
-		panel_2.add(panel_total, BorderLayout.CENTER);
+		panelTotalEtBoutons.add(panel_total, BorderLayout.CENTER);
 		panel_total.setLayout(new GridLayout(1, 2, 0, 0));
 		
 		JPanel panelTransporteur = new JPanel();
@@ -189,7 +226,7 @@ public class VotrePanier extends JFrame {
 		panelTotal.add(textFieldTotal);
 		
 		JPanel panel_button = new JPanel();
-		panel_2.add(panel_button, BorderLayout.SOUTH);
+		panelTotalEtBoutons.add(panel_button, BorderLayout.SOUTH);
 		panel_button.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnValider = new JButton("Valider le panier");
