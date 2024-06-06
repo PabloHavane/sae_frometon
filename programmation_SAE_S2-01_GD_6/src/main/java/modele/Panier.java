@@ -34,37 +34,6 @@ public class Panier {
 	public boolean isPanierEmpty() {
 		return this.panier.size() == 0;
 	}
-
-//	public void ajouterPanier(Article article, int quantité) {
-//		int indice = 0;
-//		//if ((article.getQuantitéEnStock()) - quantité >= 0) {
-//			for (int i = 0; i < this.panier.size(); i++) {
-//				if (this.panier.get(i).equals(article)) {
-//					indice = i;
-//					this.panier.get(indice).setQuantitéEnStock(this.panier.get(indice).getQuantitéEnStock() - quantité);
-//					this.quantité.set(indice, quantité + this.quantité.get(indice));
-//				}
-//			}
-//			if (indice == 0) {
-//				this.setMontant(this.montant + quantité * article.getPrixTTC());
-//				this.panier.add(article);
-//				this.quantité.add(quantité);
-//				article.setQuantitéEnStock(article.getQuantitéEnStock() - quantité);
-//			}
-//			if (this.panier.size() > 1) {
-//				Article articl = this.panier.get(0);
-//				for (int i = 1; i < this.panier.size(); i++) {
-//					if (articl.equals(this.panier.get(i))) {
-//						this.quantité.set(i, this.quantité.get(0));
-//						article.setQuantitéEnStock(article.getQuantitéEnStock() + quantité);
-//						this.panier.remove(0);
-//						this.quantité.remove(0);
-//						i += this.panier.size();
-//					}
-//				}
-//			}
-//		}
-//	//}
 	
 	public void ajouterPanier(Article article, int quantité) {
 	    if (quantité <= 0) {

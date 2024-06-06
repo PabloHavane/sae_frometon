@@ -48,32 +48,13 @@ public class VosCoordonnees extends JFrame {
 	@SuppressWarnings("unused")
 	private String moyenDePaiement;
 	@SuppressWarnings("unused")
-	private Fromage fromage;
 	private Panier panier;
-
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					VosCoordonnees frame = new VosCoordonnees(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public VosCoordonnees(Fromage fromage) {
-		this.fromage = fromage;
+	public VosCoordonnees(Panier lePanier) {
+		this.panier = lePanier;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 600, 400);
 		this.contentPane = new JPanel();

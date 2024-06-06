@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -43,6 +45,7 @@ public class NosFromages extends JFrame {
     private Fromages fromages;
     private String typeCourant;
     private Panier panier;
+    private JButton btnPanier;
 
 	/**
      * Launch the application.
@@ -106,7 +109,8 @@ public class NosFromages extends JFrame {
         lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(lblNewLabel_1);
 
-        JButton btnPanier = new JButton("0.00€");
+        btnPanier = new JButton();
+        btnPanier.setText(formatFloat(this.panier.getMontant()) + " €");
         btnPanier.addActionListener(ouvrirFenVotrePanier());
 
         btnPanier.setBackground(new Color(255, 128, 0));
@@ -135,32 +139,47 @@ public class NosFromages extends JFrame {
         for (TypeLait t : TypeLait.values()) {
             this.comboBoxType.addItem(t.getTypeDeLait());
         }
-        comboBoxType.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		String typeLaitSelec = (String) comboBoxType.getSelectedItem();
-        		typeCourant = typeLaitSelec;
-        		majListeFromage();
-        	}
-        });
+        comboBoxType.addActionListener(trierListeSelonType());
         panel_1.add(this.comboBoxType);
 
         JButton Bouton = new JButton("Quitter");
         Bouton.setHorizontalAlignment(SwingConstants.RIGHT);
         bas.add(Bouton);
-        Bouton.addActionListener(new ActionListener() {
+        Bouton.addActionListener(fermetureApp());
+    }
+
+	private ActionListener fermetureApp() {
+		return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
-        });
-    }
+        };
+	}
+
+	private ActionListener trierListeSelonType() {
+		return new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String typeLaitSelec = (String) comboBoxType.getSelectedItem();
+        		typeCourant = typeLaitSelec;
+        		majListeFromage();
+        	}
+        };
+	}
+    
+    private String formatFloat(float value) {
+	    NumberFormat formatter = new DecimalFormat("#0.00");
+	    return formatter.format(value);
+	}
 
 	private ActionListener ouvrirFenVotrePanier() {
 		return new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	if (!panier.isPanierEmpty()) {
-            		VotrePanier frame = new VotrePanier(panier);
-                    frame.setVisible(true);
+            		btnPanier.setText(formatFloat(panier.getMontant()) + " €");
+            		VotrePanier framePanier = new VotrePanier(panier);
+            		framePanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    framePanier.setVisible(true);
             	}
             }
         };

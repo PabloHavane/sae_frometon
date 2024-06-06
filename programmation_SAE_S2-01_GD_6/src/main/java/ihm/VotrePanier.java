@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -36,6 +37,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class VotrePanier extends JFrame {
 
@@ -87,6 +90,7 @@ public class VotrePanier extends JFrame {
 		panelTitre.add(panelRafraichir);
 		
 		JButton btnRafraichir = new JButton("");
+		btnRafraichir.addActionListener(rafraichirLePanier());
 		btnRafraichir.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\rafraichir.png"));
 		panelRafraichir.add(btnRafraichir);
 		
@@ -117,19 +121,15 @@ public class VotrePanier extends JFrame {
             }
         });
         
-        for (int i = 0; i < this.panier.getPanier().size(); i++) {
-        	Article article = this.panier.getPanier().get(i);
-        	DefaultTableModel model = (DefaultTableModel) table.getModel();
-        	model.addRow(new Object[] {
-        		new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
-        		article.getFromage().getDésignation() + " " +
-        		article.getClé(),
-        		article.getPrixTTC() + " €",
-        		this.panier.getQuantité().get(i),
-        		article.getPrixTTC() * this.panier.getQuantité().get(i) + " €"
-        	});
-        	
+        recupArticlesPanier();
+        
+        // Centrer le texte des cellules
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 1; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+        
         this.table.setEnabled(false);
         scrollPane.setViewportView(this.table);
 		
@@ -185,7 +185,7 @@ public class VotrePanier extends JFrame {
 		textFieldSousTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldSousTotal.setEditable(false);
 		textFieldSousTotal.setColumns(10);
-		textFieldSousTotal.setText(this.panier.getMontant() + " €");
+		textFieldSousTotal.setText(formatFloat(this.panier.getMontant()) + " €");
 		panelSousTotal.add(textFieldSousTotal);
 		
 		JPanel panelExpedition = new JPanel();
@@ -203,7 +203,7 @@ public class VotrePanier extends JFrame {
 		textFieldExpedition.setEditable(false);
 		textFieldExpedition.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldExpedition.setColumns(10);
-		textFieldExpedition.setText(this.panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
+		textFieldExpedition.setText(formatFloat(this.panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
 		panelExpedition.add(textFieldExpedition);
 		
 		JPanel panelTotal = new JPanel();
@@ -222,7 +222,7 @@ public class VotrePanier extends JFrame {
 		textFieldTotal.setColumns(10);
 		textFieldTotal.setHorizontalAlignment(SwingConstants.TRAILING);
 		textFieldTotal.setBackground(new Color(245, 218, 171));
-		textFieldTotal.setText(this.panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
+		textFieldTotal.setText(formatFloat(this.panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 		panelTotal.add(textFieldTotal);
 		
 		JPanel panel_button = new JPanel();
@@ -230,6 +230,7 @@ public class VotrePanier extends JFrame {
 		panel_button.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnValider = new JButton("Valider le panier");
+		btnValider.addActionListener(validationDuPanier());
 		panel_button.add(btnValider);
 		
 		JButton btnVider = new JButton("Vider le panier");
@@ -239,6 +240,51 @@ public class VotrePanier extends JFrame {
 		JButton btnContinuer = new JButton("Continuer mes achats");
 		btnContinuer.addActionListener(continuerAchatsFermeturePanier());
 		panel_button.add(btnContinuer);
+	}
+
+	private ActionListener validationDuPanier() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!panier.isPanierEmpty()) {
+            		VosCoordonnees frameCoor = new VosCoordonnees(panier);
+            		frameCoor.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    frameCoor.setVisible(true);
+            	}
+			}
+		};
+	}
+	
+	private String formatFloat(float value) {
+	    NumberFormat formatter = new DecimalFormat("#0.00");
+	    return formatter.format(value);
+	}
+
+	private ActionListener rafraichirLePanier() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				recupArticlesPanier();
+				textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
+				textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+				textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
+			}
+		};
+	}
+
+	private void recupArticlesPanier() {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+		for (int i = 0; i < this.panier.getPanier().size(); i++) {
+        	Article article = this.panier.getPanier().get(i);
+        	DefaultTableModel model2 = (DefaultTableModel) table.getModel();
+        	model2.addRow(new Object[] {
+        		new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
+        		article.getFromage().getDésignation() + " " +
+        		article.getClé(),
+        		formatFloat(article.getPrixTTC()) + " €",
+        		this.panier.getQuantité().get(i),
+        		formatFloat(article.getPrixTTC() * this.panier.getQuantité().get(i)) + " €"
+        	});	
+        }
 	}
 
 	private ActionListener viderPanier() {
@@ -266,18 +312,18 @@ public class VotrePanier extends JFrame {
 				switch(comboBoxTransporteur.getSelectedIndex()) {
 					case 0 :
 						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
-						textFieldExpedition.setText(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
-						textFieldTotal.setText(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
+						textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+						textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						break;
 					case 1 :
 						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronorelais.png"));
-						textFieldExpedition.setText(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
-						textFieldTotal.setText(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
+						textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+						textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						break;
 					case 2 :
 						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronofresh.png"));
-						textFieldExpedition.setText(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem()) + " €");
-						textFieldTotal.setText(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem()) + " €");
+						textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+						textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						break;
 				}
 			}

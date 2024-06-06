@@ -93,7 +93,7 @@ public class VotreFacture extends JFrame {
         btnNewButton_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                dispose();
             }
         });
         bas.add(btnNewButton_1);

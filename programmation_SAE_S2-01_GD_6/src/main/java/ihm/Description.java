@@ -126,7 +126,6 @@ public class Description extends JFrame {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String itemSelec = (String) comboBox.getSelectedItem();
-				System.out.println(itemSelec);
 				Article art = null;
         		for (Article article: fromage.getArticles()) {
                     if (article.toString().equals(itemSelec)) {
@@ -136,9 +135,7 @@ public class Description extends JFrame {
         		if (art != null) {
         			panier.ajouterPanier(art, (int) spinner.getValue());
         		}
-				VotrePanier papanier = new VotrePanier(panier);
-                papanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                papanier.setVisible(true);
+				dispose();
 			}
 		};
 	}
