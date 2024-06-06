@@ -176,7 +176,7 @@ public class NosFromages extends JFrame {
 		return new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	if (!panier.isPanierEmpty()) {
-            		btnPanier.setText(formatFloat(panier.getMontant()) + " €");
+            		btnPanier.setText(formatFloat(panier.getMontant()) + " €"); // A SUPPR
             		VotrePanier framePanier = new VotrePanier(panier);
             		framePanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     framePanier.setVisible(true);

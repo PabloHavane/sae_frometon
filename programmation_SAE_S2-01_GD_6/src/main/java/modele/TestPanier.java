@@ -27,42 +27,84 @@ public class TestPanier {
 	@Test
 	public void testSetMontant() {
 		this.panier.setMontant(14);
-		assertEquals(this.panier.getMontant(), 14, 0);
+		assertEquals(14, this.panier.getMontant(), 0.1);
 	}
 
 	@Test
-	public void testFraisDeLivraisonChronopost() {
-		assertEquals(this.panier.fraisDeLivraison("chronopost"), 12, 0);
+	public void testFraisDeLivraisonChronofreshPanierInférieurA50() {
+		assertEquals(23.8f, this.panier.fraisDeLivraison("Chronofresh"), 0.1);
 	}
 
 	@Test
-	public void testFraisDeLivraisonAutre() {
-		assertEquals(this.panier.fraisDeLivraison("c"), 9, 0);
+	public void testFraisDeLivraisonChronofreshPanierInférieurA80() {
+		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
+		A.setQuantitéEnStock(193);
+		this.panier.ajouterPanier(A, 12);
+		assertEquals(17.8f, this.panier.fraisDeLivraison("Chronofresh"), 0.1);
 	}
 
 	@Test
-	public void testFraisDeLivraisonMontantPlusQue120() {
-		this.panier.setMontant(150);
-		assertEquals(this.panier.fraisDeLivraison("chronopost"), 0, 0);
+	public void testFraisDeLivraisonChronofreshPanierInférieurA120() {
+		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
+		A.setQuantitéEnStock(193);
+		this.panier.ajouterPanier(A, 20);
+		assertEquals(9.9f, this.panier.fraisDeLivraison("Chronofresh"), 0.1);
+	}
+
+	@Test
+	public void testFraisDeLivraisonChronofreshPanierSupérieurA120() {
+		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
+		A.setQuantitéEnStock(193);
+		this.panier.ajouterPanier(A, 30);
+		assertEquals(0, this.panier.fraisDeLivraison("Chronofresh"), 0.1);
+	}
+
+	@Test
+	public void testFraisDeLivraisonAutrePanierInférieurA60() {
+		assertEquals(14.9f, this.panier.fraisDeLivraison("c"), 0.1);
+	}
+
+	@Test
+	public void testFraisDeLivraisonAutrePanierInférieurA90() {
+		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
+		A.setQuantitéEnStock(193);
+		this.panier.ajouterPanier(A, 13);
+		assertEquals(9.9f, this.panier.fraisDeLivraison("c"), 0.1);
+	}
+
+	@Test
+	public void testFraisDeLivraisonAutrePanierInférieurA120() {
+		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
+		A.setQuantitéEnStock(193);
+		this.panier.ajouterPanier(A, 20);
+		assertEquals(4.9f, this.panier.fraisDeLivraison("c"), 0.1);
+	}
+
+	@Test
+	public void testFraisDeLivraisonAutrePanierSupérieurA120() {
+		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
+		A.setQuantitéEnStock(193);
+		this.panier.ajouterPanier(A, 30);
+		assertEquals(0, this.panier.fraisDeLivraison("c"), 0.1);
 	}
 
 	@Test
 	public void testViderPanier() {
-		assertEquals(this.panier.getMontant(), 0, 0);
-		assertEquals(this.panier.getPanier().size(), 0);
-		assertEquals(this.panier.getQuantité().size(), 0);
+		assertEquals(0, this.panier.getMontant(), 0);
+		assertEquals(0, this.panier.getPanier().size());
+		assertEquals(0, this.panier.getQuantité().size());
 	}
 
 	@Test
 	public void testTotalAvecExpédition() {
 		this.panier.setMontant(30);
-		assertEquals(this.panier.totalAvecExpedition("chronopost"), 42, 0);
+		assertEquals(53.8, this.panier.totalAvecExpedition("Chronofresh"), 0.1);
 	}
 
 	@Test
 	public void testTotalAvecExpéditionSupérieur120() {
 		this.panier.setMontant(300);
-		assertEquals(this.panier.totalAvecExpedition("chronopost"), 300, 0);
+		assertEquals(300, this.panier.totalAvecExpedition("Chronofresh"), 0.1);
 	}
 
 	@Test
@@ -79,8 +121,8 @@ public class TestPanier {
 		this.panier.ajouterPanier(B, 4);
 		this.panier.ajouterPanier(C, 4);
 		this.panier.ajouterPanier(D, 5);
-		assertEquals(this.panier.getMontant(), 100, 0);
-		assertEquals(this.panier.totalAvecExpedition("chronopost"), 112, 0);
+		assertEquals(100, this.panier.getMontant(), 0);
+		assertEquals(109.9, this.panier.totalAvecExpedition("Chronofresh"), 0.1);
 	}
 
 	@Test
@@ -89,9 +131,9 @@ public class TestPanier {
 		Article A = new Article(new Fromage("Test1"), "e", 5.0f);
 		A.setQuantitéEnStock(1020);
 		this.panier.ajouterPanier(A, 4);
-		assertEquals(this.panier.getMontant(), 20, 0);
-		assertEquals(this.panier.getQuantité().size(), 1);
-		assertEquals(this.panier.getPanier().size(), 1);
+		assertEquals(20, this.panier.getMontant(), 0);
+		assertEquals(1, this.panier.getQuantité().size());
+		assertEquals(1, this.panier.getPanier().size());
 	}
 
 	@Test
@@ -109,7 +151,7 @@ public class TestPanier {
 		Article D = new Article(new Fromage("Test4"), "h", 5.0f);
 		D.setQuantitéEnStock(1020);
 		this.panier.ajouterPanier(D, 4);
-		assertEquals(this.panier.getPanier().size(), 4);
+		assertEquals(4, this.panier.getPanier().size());
 	}
 
 	@Test
@@ -123,7 +165,7 @@ public class TestPanier {
 		this.panier.ajouterPanier(A, 3);
 		this.panier.ajouterPanier(B, 3);
 		this.panier.ajouterPanier(B, 3);
-		assertEquals(this.panier.getPanier().size(), 2);
+		assertEquals(2, this.panier.getPanier().size());
 	}
 
 	@Test
@@ -139,7 +181,7 @@ public class TestPanier {
 		this.panier.ajouterPanier(B, 3);
 		this.panier.ajouterPanier(A, 3);
 		this.panier.ajouterPanier(A, 1);
-		assertEquals(this.panier.getPanier().size(), 2);
+		assertEquals(2, this.panier.getPanier().size());
 	}
 
 	@Test
@@ -147,7 +189,7 @@ public class TestPanier {
 		Article B = new Article(new Fromage("Test1"), "e", 5.0f);
 		B.setQuantitéEnStock(30);
 		this.panier.ajouterPanier(B, 3);
-		assertEquals(B.getQuantitéEnStock(), 27);
+		assertEquals(27, B.getQuantitéEnStock());
 	}
 
 	@Test
@@ -157,7 +199,7 @@ public class TestPanier {
 		this.panier.ajouterPanier(B, 9);
 		this.panier.ajouterPanier(B, 2);
 		this.panier.ajouterPanier(B, 10);
-		assertEquals(B.getQuantitéEnStock(), 9);
+		assertEquals(9, B.getQuantitéEnStock());
 	}
 
 	@Test
@@ -168,7 +210,7 @@ public class TestPanier {
 		this.panier.ajouterPanier(B, 2);
 		this.panier.ajouterPanier(B, 10);
 		this.panier.ajouterPanier(B, 10);
-		assertEquals(21.0f, this.panier.getQuantité().get(0), 0);
+		assertEquals(30, this.panier.getQuantité().get(0), 0.1);
 	}
 
 	@Test
