@@ -90,6 +90,10 @@ public class TestPanier {
 
 	@Test
 	public void testViderPanier() {
+		Article B = new Article(new Fromage("Test1"), "e", 5.0f);
+		B.setQuantitéEnStock(30);
+		this.panier.ajouterPanier(B, 3);
+		this.panier.viderPanier();
 		assertEquals(0, this.panier.getMontant(), 0);
 		assertEquals(0, this.panier.getPanier().size());
 		assertEquals(0, this.panier.getQuantité().size());
@@ -211,6 +215,14 @@ public class TestPanier {
 		this.panier.ajouterPanier(B, 10);
 		this.panier.ajouterPanier(B, 10);
 		assertEquals(30, this.panier.getQuantité().get(0), 0.1);
+	}
+
+	@Test
+	public void testAjoutPanierQuantitéVide() {
+		Article B = new Article(new Fromage("Test1"), "e", 5.0f);
+		B.setQuantitéEnStock(30);
+		this.panier.ajouterPanier(B, 0);
+		assertEquals(0, this.panier.getPanier().size());
 	}
 
 	@Test
