@@ -50,13 +50,15 @@ public class VotrePanier extends JFrame {
 	private DefaultTableModel modeleTable;
 	private JTable table;
 	private Panier panier;
+	private NosFromages nosFromages;
 	private JComboBox<String> comboBoxTransporteur;
 
 	/**
 	 * Create the frame.
 	 */
-	public VotrePanier(Panier lePanier) {
+	public VotrePanier(Panier lePanier, NosFromages nf) {
 		this.panier = lePanier;
+		this.nosFromages = nf;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
@@ -234,7 +236,7 @@ public class VotrePanier extends JFrame {
 		panel_button.add(btnValider);
 		
 		JButton btnVider = new JButton("Vider le panier");
-		btnVider.addActionListener(viderPanier());
+		btnVider.addActionListener(viderPanier(this.nosFromages));
 		panel_button.add(btnVider);
 		
 		JButton btnContinuer = new JButton("Continuer mes achats");
@@ -287,12 +289,16 @@ public class VotrePanier extends JFrame {
         }
 	}
 
-	private ActionListener viderPanier() {
+	private ActionListener viderPanier(NosFromages nf) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				model.setRowCount(0);
 				panier.viderPanier();
+				nf.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
+				textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
+				textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+				textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 			}
 		};
 	}

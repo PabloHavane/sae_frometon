@@ -31,6 +31,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -42,14 +44,16 @@ public class Description extends JFrame {
 	private Fromage fromage;
 	private Panier panier;
 	private JSpinner spinner;
+	private NosFromages nosFromages;
 	private JComboBox<String> comboBox;
 
 	/**
 	 * Create the frame.
 	 */
-	public Description(Fromage leFromage, Panier lePanier) {
+	public Description(Fromage leFromage, Panier lePanier, NosFromages nosFrometons) {
 		this.fromage = leFromage;
 		this.panier = lePanier;
+		this.nosFromages = nosFrometons;
 				
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 400);
@@ -81,7 +85,7 @@ public class Description extends JFrame {
 		panelClic.add(panelBtn);
 		
 		JButton btnAjoutPanier = new JButton("Ajouter au panier");
-		btnAjoutPanier.addActionListener(ajoutArticlePanier());
+		btnAjoutPanier.addActionListener(ajoutArticlePanier(this.nosFromages));
 		panelBtn.add(btnAjoutPanier);
 		
 		JButton btnAnnuler = new JButton("Annuler");
@@ -122,7 +126,7 @@ public class Description extends JFrame {
 		panelDescription.add(textArea, "name_1190427149665900");
 	}
 
-	private ActionListener ajoutArticlePanier() {
+	private ActionListener ajoutArticlePanier(NosFromages nf) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String itemSelec = (String) comboBox.getSelectedItem();
@@ -134,10 +138,16 @@ public class Description extends JFrame {
                 }
         		if (art != null) {
         			panier.ajouterPanier(art, (int) spinner.getValue());
+        			nf.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
         		}
 				dispose();
 			}
 		};
+	}
+	
+	private String formatFloat(float value) {
+	    NumberFormat formatter = new DecimalFormat("#0.00");
+	    return formatter.format(value);
 	}
 
 	private ActionListener annulationFermetureFen() {

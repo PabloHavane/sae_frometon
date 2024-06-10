@@ -73,7 +73,7 @@ public class VosCoordonnees extends JFrame {
 		haut.add(TitreCoordonées);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\chari\\git\\sae_frometon2\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Maison.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Maison.png"));
 		haut.add(lblNewLabel);
 
 		JPanel centre = new JPanel();

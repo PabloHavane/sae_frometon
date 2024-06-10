@@ -89,7 +89,7 @@ public class NosFromages extends JFrame {
         scrollPane.setViewportView(listFromages);
         
         // Ouvrir une fenetre Description
-        listFromages.addMouseListener(ouvrirFromageDescription(LISTING_ALL_FROMAGES, listFromages));
+        listFromages.addMouseListener(ouvrirFromageDescription(LISTING_ALL_FROMAGES, listFromages, this));
 
         JPanel haut = new JPanel();
         contentPane.add(haut, BorderLayout.NORTH);
@@ -110,17 +110,17 @@ public class NosFromages extends JFrame {
         panel.add(lblNewLabel_1);
 
         btnPanier = new JButton();
-        btnPanier.setText(formatFloat(this.panier.getMontant()) + " €");
-        btnPanier.addActionListener(ouvrirFenVotrePanier());
+        getBtnPanier().setText(formatFloat(this.panier.getMontant()) + " €");
+        getBtnPanier().addActionListener(ouvrirFenVotrePanier(this));
 
-        btnPanier.setBackground(new Color(255, 128, 0));
-        btnPanier.setForeground(new Color(0, 0, 0));
-        btnPanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\panier.png"));
+        getBtnPanier().setBackground(new Color(255, 128, 0));
+        getBtnPanier().setForeground(new Color(0, 0, 0));
+        getBtnPanier().setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\panier.png"));
 
-        btnPanier.setHorizontalAlignment(SwingConstants.RIGHT);
-        btnPanier.setBounds(new Rectangle(20, 0, 0, 0));
-        btnPanier.setAlignmentX(1.0f);
-        haut.add(btnPanier, BorderLayout.EAST);
+        getBtnPanier().setHorizontalAlignment(SwingConstants.RIGHT);
+        getBtnPanier().setBounds(new Rectangle(20, 0, 0, 0));
+        getBtnPanier().setAlignmentX(1.0f);
+        haut.add(getBtnPanier(), BorderLayout.EAST);
 
         JPanel bas = new JPanel();
         contentPane.add(bas, BorderLayout.SOUTH);
@@ -172,12 +172,12 @@ public class NosFromages extends JFrame {
 	    return formatter.format(value);
 	}
 
-	private ActionListener ouvrirFenVotrePanier() {
+	private ActionListener ouvrirFenVotrePanier(NosFromages nf) {
 		return new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	if (!panier.isPanierEmpty()) {
-            		btnPanier.setText(formatFloat(panier.getMontant()) + " €"); // A SUPPR
-            		VotrePanier framePanier = new VotrePanier(panier);
+            		getBtnPanier().setText(formatFloat(panier.getMontant()) + " €"); // A SUPPR
+            		VotrePanier framePanier = new VotrePanier(panier, nf);
             		framePanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     framePanier.setVisible(true);
             	}
@@ -198,7 +198,7 @@ public class NosFromages extends JFrame {
     	listFromages = new JList<>(listModel);
     }
 
-	private MouseAdapter ouvrirFromageDescription(Fromages listingFromages, JList<String> listFromages) {
+	private MouseAdapter ouvrirFromageDescription(Fromages listingFromages, JList<String> listFromages, NosFromages nf) {
 		return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -211,12 +211,16 @@ public class NosFromages extends JFrame {
                         }
                     }
                     if (fromageDesc != null) {
-                    	Description description = new Description(fromageDesc, panier);
+                    	Description description = new Description(fromageDesc, panier, nf);
 	                    description.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	                    description.setVisible(true);
                     }
                 }
             }
         };
+	}
+
+	public JButton getBtnPanier() {
+		return btnPanier;
 	}
 }
