@@ -181,6 +181,10 @@ public class NosFromages extends JFrame {
             		VotrePanier framePanier = new VotrePanier(panier, nf);
             		framePanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     framePanier.setVisible(true);
+            	} else {
+            		PanierVide panierVide = new PanierVide();
+                    panierVide.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    panierVide.setVisible(true);
             	}
             }
         };
