@@ -75,10 +75,18 @@ public class Description extends JFrame {
             modele.addElement(article.toString());
         }
         comboBox = new JComboBox<>(modele);
+        comboBox.addActionListener(modifValeurMaxSpinner());
 		panelComboSpin.add(comboBox);
 		
 		spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, this.fromage.getArticles().get(0).getQuantitéEnStock(), 1));
+		if (this.fromage.getArticles().get(0).getQuantitéEnStock() > 0) {
+			spinner.setModel(new SpinnerNumberModel(1, 1, this.fromage.getArticles().get(0).getQuantitéEnStock(), 1));
+		} else {
+			spinner.setModel(new SpinnerNumberModel(1, 1, 1, 1));
+			RuptureDeStock rds = new RuptureDeStock();
+        	rds.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            rds.setVisible(true);
+		}
 		panelComboSpin.add(spinner);
 		
 		JPanel panelBtn = new JPanel();
@@ -124,6 +132,28 @@ public class Description extends JFrame {
 		textArea.setLineWrap(true);
 		textArea.setText(this.fromage.getDescription());
 		panelDescription.add(textArea, "name_1190427149665900");
+	}
+
+	private ActionListener modifValeurMaxSpinner() {
+		return new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String itemSelec = (String) comboBox.getSelectedItem();
+				Article art = null;
+        		for (Article article: fromage.getArticles()) {
+                    if (article.toString().equals(itemSelec)) {
+                    	art = article;
+                    }
+                }
+        		if (art.getQuantitéEnStock() == 0) {
+        			RuptureDeStock rds = new RuptureDeStock();
+                	rds.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    rds.setVisible(true);
+        		} else {
+        			spinner.setModel(new SpinnerNumberModel(1, 1, art.getQuantitéEnStock(), 1));
+        		}
+        		System.out.println(art.getQuantitéEnStock());
+        	}
+        };
 	}
 
 	private ActionListener ajoutArticlePanier(NosFromages nf) {

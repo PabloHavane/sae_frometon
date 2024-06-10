@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import modele.Article;
 import modele.Fromage;
 import modele.Fromages;
 import modele.GenerationFromages;
