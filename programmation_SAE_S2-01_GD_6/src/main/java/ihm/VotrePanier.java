@@ -232,7 +232,7 @@ public class VotrePanier extends JFrame {
 		panel_button.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnValider = new JButton("Valider le panier");
-		btnValider.addActionListener(validationDuPanier());
+		btnValider.addActionListener(validationDuPanier(this));
 		panel_button.add(btnValider);
 		
 		JButton btnVider = new JButton("Vider le panier");
@@ -244,11 +244,11 @@ public class VotrePanier extends JFrame {
 		panel_button.add(btnContinuer);
 	}
 
-	private ActionListener validationDuPanier() {
+	private ActionListener validationDuPanier(VotrePanier vp) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!panier.isPanierEmpty()) {
-            		VosCoordonnees frameCoor = new VosCoordonnees(panier);
+            		VosCoordonnees frameCoor = new VosCoordonnees(panier, vp);
             		frameCoor.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     frameCoor.setVisible(true);
             	}
@@ -259,6 +259,20 @@ public class VotrePanier extends JFrame {
 	private String formatFloat(float value) {
 	    NumberFormat formatter = new DecimalFormat("#0.00");
 	    return formatter.format(value);
+	}
+	
+	/**
+	 * @return the table
+	 */
+	public JTable getTable() {
+		return table;
+	}
+
+	/**
+	 * @return the comboBoxTransporteur
+	 */
+	public JComboBox<String> getComboBoxTransporteur() {
+		return comboBoxTransporteur;
 	}
 
 	private ActionListener rafraichirLePanier() {

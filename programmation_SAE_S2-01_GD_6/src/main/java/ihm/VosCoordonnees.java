@@ -49,12 +49,14 @@ public class VosCoordonnees extends JFrame {
 	private String moyenDePaiement;
 	@SuppressWarnings("unused")
 	private Panier panier;
+	private VotrePanier votrePanier;
 
 	/**
 	 * Create the frame.
 	 */
-	public VosCoordonnees(Panier lePanier) {
+	public VosCoordonnees(Panier lePanier, VotrePanier vp) {
 		this.panier = lePanier;
+		this.votrePanier = vp;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 600, 400);
 		this.contentPane = new JPanel();
@@ -238,7 +240,26 @@ public class VosCoordonnees extends JFrame {
 		bas.add(Boutons, BorderLayout.SOUTH);
 
 		JButton btnNewButton = new JButton("OK");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnNewButton.addActionListener(genererFacture());
+		btnNewButton.setToolTipText("OK");
+		Boutons.add(btnNewButton);
+
+		JButton Annuler = new JButton("Annuler");
+		Annuler.addActionListener(fermerFenCoor());
+		Boutons.add(Annuler);
+	}
+
+	private ActionListener fermerFenCoor() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VosCoordonnees.this.dispose();
+			}
+		};
+	}
+
+	private ActionListener genererFacture() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String nom = VosCoordonnees.this.textField.getText();
@@ -250,23 +271,10 @@ public class VosCoordonnees extends JFrame {
 				String Telephone = VosCoordonnees.this.textField_6.getText();
 				String Mail = VosCoordonnees.this.textField_7.getText();
 				VotreFacture frame = new VotreFacture(nom, prenom, adresse1, adresse2, CP, Ville, Telephone, Mail,
-						VosCoordonnees.this.moyenDePaiement, panier);
+						VosCoordonnees.this.moyenDePaiement, panier, votrePanier);
 				frame.setVisible(true);
-
 			}
-		});
-		btnNewButton.setToolTipText("OK");
-		Boutons.add(btnNewButton);
-
-		JButton Annuler = new JButton("Annuler");
-		Annuler.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				VosCoordonnees.this.dispose();
-			}
-
-		});
-		Boutons.add(Annuler);
+		};
 	}
 
 }

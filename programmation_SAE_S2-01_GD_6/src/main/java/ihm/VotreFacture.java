@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
@@ -28,11 +29,12 @@ public class VotreFacture extends JFrame {
     private Fromage fromage;
     @SuppressWarnings("unused")
 	private Panier panier;
+    private VotrePanier votrePanier;
 
     public VotreFacture(String nom, String prenom, String adresse1, String adresse2, String CP, String Ville,
-                        String Telephone, String Mail, String moyenDePaiement, Panier panier) {
+                        String Telephone, String Mail, String moyenDePaiement, Panier panier, VotrePanier vp) {
         this.panier = panier;
-
+        this.votrePanier = vp;
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setBounds(100, 100, 516, 362);
         this.contentPane = new JPanel();
@@ -40,42 +42,119 @@ public class VotreFacture extends JFrame {
         this.setContentPane(this.contentPane);
         this.contentPane.setLayout(new BorderLayout(0, 0));
 
-        JPanel haut = new JPanel();
-        haut.setBackground(new Color(255, 255, 255));
-        this.contentPane.add(haut, BorderLayout.NORTH);
-        haut.setPreferredSize(new Dimension(100, 40));
-        haut.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        JPanel panelTitre = new JPanel();
+        panelTitre.setBackground(new Color(255, 255, 255));
+        this.contentPane.add(panelTitre, BorderLayout.NORTH);
+        panelTitre.setPreferredSize(new Dimension(100, 40));
+        panelTitre.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        JLabel lblNewLabel = new JLabel("Votre facture");
-        lblNewLabel.setForeground(new Color(0, 128, 0));
-        lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
-        lblNewLabel.setToolTipText("");
-        haut.add(lblNewLabel);
+        JLabel lblTitre = new JLabel("Votre facture");
+        lblTitre.setForeground(new Color(0, 128, 0));
+        lblTitre.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+        lblTitre.setToolTipText("");
+        panelTitre.add(lblTitre);
 
-        JLabel lblNewLabel_1 = new JLabel("");
-        lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\chari\\AppData\\Local\\Microsoft\\Windows\\INetCache\\IE\\F3GSCC8E\\Image_Pasted_2023-23-05_at_16.44.14[1].png"));
-        haut.add(lblNewLabel_1);
+        JLabel lblIconeFacture = new JLabel("");
+        lblIconeFacture.setIcon(new ImageIcon("C:\\Users\\chari\\AppData\\Local\\Microsoft\\Windows\\INetCache\\IE\\F3GSCC8E\\Image_Pasted_2023-23-05_at_16.44.14[1].png"));
+        panelTitre.add(lblIconeFacture);
 
         JScrollPane scrollPane = new JScrollPane();
         this.contentPane.add(scrollPane, BorderLayout.CENTER);
 
+//        JTextPane facture = new JTextPane();
+//        facture.setEditable(false);
+//        facture.setText("INFORMATIONS CLIENT: " + nom + " " + prenom + "\n" + adresse1 + "\n" + adresse2 + "\n" + CP
+//                + " " + Ville + "\n" + "Téléphone: " + Telephone + "\n" + "E-mail: " + Mail + "\n"
+//                + "Moyen de paiement par " + moyenDePaiement + "\n");
+//        // Récupérer le modèle de table et construire la chaîne de caractères
+//        JTable table = this.votrePanier.getTable();
+//        StringBuilder tableData = new StringBuilder();
+//        for (int row = 0; row < table.getRowCount(); row++) {
+//            for (int col = 0; col < table.getColumnCount(); col++) {
+//                tableData.append(table.getValueAt(row, col)).append(" ");
+//            }
+//            tableData.append("\n");
+//        }
+//        facture.setText(facture.getText() + "\n" + tableData.toString());
+//        facture.setText(facture.getText() + "\n\n" + "Votre Commande : " + panier.getMontant() + "\n"
+//                + "Expédition (forfait) : " + panier.fraisDeLivraison( (String) this.votrePanier.getComboBoxTransporteur().getSelectedItem()) 
+//                + "\n" + "Prix Total TTC : " + panier.totalAvecExpedition(moyenDePaiement));
+        
         JTextPane facture = new JTextPane();
+        facture.setContentType("text/html");
         facture.setEditable(false);
-        facture.setText("INFORMATIONS CLIENT: " + nom + " " + prenom + "\n" + adresse1 + "\n" + adresse2 + "\n" + CP
-                + " " + Ville + "\n" + "Téléphone: " + Telephone + "\n" + "E-mail: " + Mail + "\n"
-                + "Moyen de paiement par " + moyenDePaiement + "\n");
 
-        facture.setText(facture.getText() + "\n" + "Votre Commande : " + panier.getMontant() + "\n"
-                + "Expédition (forfait) : " + panier.fraisDeLivraison("chronopost") + "\n" + "Prix Total TTC : " + panier.totalAvecExpedition(moyenDePaiement));
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<html><body>");
+        htmlContent.append("<h2>INFORMATIONS CLIENT</h2>");
+        htmlContent.append("<p>").append(nom).append(" ").append(prenom).append("<br>");
+        htmlContent.append(adresse1).append("<br>");
+        htmlContent.append(adresse2).append("<br>");
+        htmlContent.append(CP).append(" ").append(Ville).append("<br>");
+        htmlContent.append("Téléphone: ").append(Telephone).append("<br>");
+        htmlContent.append("E-mail: ").append(Mail).append("<br>");
+        htmlContent.append("Moyen de paiement par ").append(moyenDePaiement).append("</p>");
+
+        htmlContent.append("<h2>VOTRE PANIER</h2>");
+        htmlContent.append("<table border='1'><tr>");
+        
+        JTable table = this.votrePanier.getTable();
+        
+        for (int col = 0; col < table.getColumnCount(); col++) {
+            htmlContent.append("<th>").append(table.getColumnName(col)).append("</th>");
+        }
+        htmlContent.append("</tr>");
+        
+        for (int row = 0; row < table.getRowCount(); row++) {
+            htmlContent.append("<tr>");
+            for (int col = 0; col < table.getColumnCount(); col++) {
+            	Object value = table.getValueAt(row, col);
+                if (value != null && value.toString().endsWith(".jpg")) {
+                    htmlContent.append("<td><img src='file:").append(value.toString()).append("' width='100' height='100'></td>");
+                } else {
+                    htmlContent.append("<td>").append(value).append("</td>");
+                }
+            }
+            htmlContent.append("</tr>");
+        }
+        htmlContent.append("</table>");
+
+        htmlContent.append("<h2>RÉCAPITULATIF</h2>");
+        htmlContent.append("<p>Votre Commande : ").append(panier.getMontant()).append("<br>");
+        htmlContent.append("Expédition (forfait) : ").append(panier.fraisDeLivraison((String) this.votrePanier.getComboBoxTransporteur().getSelectedItem())).append("<br>");
+        htmlContent.append("Prix Total TTC : ").append(panier.totalAvecExpedition(moyenDePaiement)).append("</p>");
+        htmlContent.append("</body></html>");
+
+        facture.setText(htmlContent.toString());
         scrollPane.setViewportView(facture);
 
-        JPanel bas = new JPanel();
-        bas.setBackground(new Color(255, 255, 255));
-        this.contentPane.add(bas, BorderLayout.SOUTH);
-        bas.setPreferredSize(new Dimension(100, 40));
+        JPanel panelBoutons = new JPanel();
+        panelBoutons.setBackground(new Color(255, 255, 255));
+        this.contentPane.add(panelBoutons, BorderLayout.SOUTH);
+        panelBoutons.setPreferredSize(new Dimension(100, 40));
 
-        JButton btnNewButton = new JButton("Imprimer");
-        btnNewButton.addActionListener(new ActionListener() {
+        JButton btnImprimer = new JButton("Imprimer");
+        btnImprimer.addActionListener(imprimerFacture(facture));
+
+        panelBoutons.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        panelBoutons.add(btnImprimer);
+
+        JButton btnQuitter = new JButton("Quitter");
+        btnQuitter.addActionListener(fermerApplication());
+        panelBoutons.add(btnQuitter);
+    }
+
+	private ActionListener fermerApplication() {
+		return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(ABORT);
+            }
+        };
+	}
+
+	private ActionListener imprimerFacture(JTextPane facture) {
+		return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -84,18 +163,6 @@ public class VotreFacture extends JFrame {
                     ex.printStackTrace();
                 }
             }
-        });
-
-        bas.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        bas.add(btnNewButton);
-
-        JButton btnNewButton_1 = new JButton("Quitter");
-        btnNewButton_1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-        bas.add(btnNewButton_1);
-    }
+        };
+	}
 }
