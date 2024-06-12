@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,6 +37,9 @@ public class VotreFacture extends JFrame {
                         String Telephone, String Mail, String moyenDePaiement, Panier panier, VotrePanier vp) {
         this.panier = panier;
         this.votrePanier = vp;
+        setTitle("La Cave à Frometon");
+    	ImageIcon img = new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+    	setIconImage(img.getImage());
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setBounds(100, 100, 516, 362);
         this.contentPane = new JPanel();
@@ -86,14 +91,15 @@ public class VotreFacture extends JFrame {
 
         StringBuilder htmlContent = new StringBuilder();
         htmlContent.append("<html><body>");
+        htmlContent.append("<h1>FACTURE FROMAGERIE Fro Le Mage<h1>");
         htmlContent.append("<h2>INFORMATIONS CLIENT</h2>");
-        htmlContent.append("<p>").append(nom).append(" ").append(prenom).append("<br>");
+        htmlContent.append("<p>").append(prenom).append(" ").append(nom).append("<br>");
         htmlContent.append(adresse1).append("<br>");
         htmlContent.append(adresse2).append("<br>");
         htmlContent.append(CP).append(" ").append(Ville).append("<br>");
         htmlContent.append("Téléphone: ").append(Telephone).append("<br>");
         htmlContent.append("E-mail: ").append(Mail).append("<br>");
-        htmlContent.append("Moyen de paiement par ").append(moyenDePaiement).append("</p>");
+        htmlContent.append("Paiement par ").append(moyenDePaiement).append("</p>");
 
         htmlContent.append("<h2>VOTRE PANIER</h2>");
         htmlContent.append("<table border='1'><tr>");
@@ -120,9 +126,9 @@ public class VotreFacture extends JFrame {
         htmlContent.append("</table>");
 
         htmlContent.append("<h2>RÉCAPITULATIF</h2>");
-        htmlContent.append("<p>Votre Commande : ").append(panier.getMontant()).append("<br>");
-        htmlContent.append("Expédition (forfait) : ").append(panier.fraisDeLivraison((String) this.votrePanier.getComboBoxTransporteur().getSelectedItem())).append("<br>");
-        htmlContent.append("Prix Total TTC : ").append(panier.totalAvecExpedition(moyenDePaiement)).append("</p>");
+        htmlContent.append("<p>Votre Commande : ").append(formatFloat(panier.getMontant())).append("€").append("<br>");
+        htmlContent.append("Expédition (forfait) : ").append(formatFloat(panier.fraisDeLivraison((String) this.votrePanier.getComboBoxTransporteur().getSelectedItem()))).append("€").append("<br>");
+        htmlContent.append("<strong>Prix Total TTC : ").append(formatFloat(panier.totalAvecExpedition((String) this.votrePanier.getComboBoxTransporteur().getSelectedItem()))).append("€").append("</strong></p>");
         htmlContent.append("</body></html>");
 
         facture.setText(htmlContent.toString());
@@ -151,6 +157,11 @@ public class VotreFacture extends JFrame {
                 System.exit(ABORT);
             }
         };
+	}
+	
+	private String formatFloat(float value) {
+	    NumberFormat formatter = new DecimalFormat("#0.00");
+	    return formatter.format(value);
 	}
 
 	private ActionListener imprimerFacture(JTextPane facture) {

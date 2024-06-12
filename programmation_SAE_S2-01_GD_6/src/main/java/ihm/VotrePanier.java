@@ -60,6 +60,9 @@ public class VotrePanier extends JFrame {
 		this.panier = lePanier;
 		this.nosFromages = nf;
 		
+		setTitle("La Cave à Frometon");
+    	ImageIcon img = new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+    	setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
 		contentPane = new JPanel();

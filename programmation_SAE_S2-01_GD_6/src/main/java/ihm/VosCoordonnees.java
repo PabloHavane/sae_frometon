@@ -57,6 +57,9 @@ public class VosCoordonnees extends JFrame {
 	public VosCoordonnees(Panier lePanier, VotrePanier vp) {
 		this.panier = lePanier;
 		this.votrePanier = vp;
+		setTitle("La Cave à Frometon");
+    	ImageIcon img = new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+    	setIconImage(img.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 600, 400);
 		this.contentPane = new JPanel();
@@ -173,7 +176,7 @@ public class VosCoordonnees extends JFrame {
 				if (VosCoordonnees.this.CarteDeCredit.isSelected()) {
 					VosCoordonnees.this.Paypal.setSelected(false);
 					VosCoordonnees.this.PaiementParCheque.setSelected(false);
-					VosCoordonnees.this.moyenDePaiement = "Carte de crédit";
+					VosCoordonnees.this.moyenDePaiement = "carte de crédit";
 				}
 			}
 		});
@@ -199,7 +202,7 @@ public class VosCoordonnees extends JFrame {
 				if (VosCoordonnees.this.PaiementParCheque.isSelected()) {
 					VosCoordonnees.this.CarteDeCredit.setSelected(false);
 					VosCoordonnees.this.Paypal.setSelected(false);
-					VosCoordonnees.this.moyenDePaiement = "Paiement par chèque";
+					VosCoordonnees.this.moyenDePaiement = "chèque";
 				}
 			}
 		});
