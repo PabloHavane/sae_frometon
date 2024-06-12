@@ -239,7 +239,7 @@ public class VotrePanier extends JFrame {
 		panel_button.add(btnValider);
 		
 		JButton btnVider = new JButton("Vider le panier");
-		btnVider.addActionListener(viderPanier(this.nosFromages));
+		btnVider.addActionListener(ouvertureFenVVP(this.nosFromages, this));
 		panel_button.add(btnVider);
 		
 		JButton btnContinuer = new JButton("Continuer mes achats");
@@ -269,6 +269,34 @@ public class VotrePanier extends JFrame {
 	 */
 	public JTable getTable() {
 		return table;
+	}
+
+	/**
+	 * @return the textFieldSousTotal
+	 */
+	public JTextField getTextFieldSousTotal() {
+		return textFieldSousTotal;
+	}
+
+	/**
+	 * @return the textFieldExpedition
+	 */
+	public JTextField getTextFieldExpedition() {
+		return textFieldExpedition;
+	}
+
+	/**
+	 * @return the textFieldTotal
+	 */
+	public JTextField getTextFieldTotal() {
+		return textFieldTotal;
+	}
+
+	/**
+	 * @return the panier
+	 */
+	public Panier getPanier() {
+		return panier;
 	}
 
 	/**
@@ -306,16 +334,12 @@ public class VotrePanier extends JFrame {
         }
 	}
 
-	private ActionListener viderPanier(NosFromages nf) {
+	private ActionListener ouvertureFenVVP(NosFromages nf, VotrePanier vp) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				model.setRowCount(0);
-				panier.viderPanier();
-				nf.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
-				textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
-				textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
-				textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
+				ValiderViderPanier vvp = new ValiderViderPanier(vp, nf);
+				vvp.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                vvp.setVisible(true);
 			}
 		};
 	}
