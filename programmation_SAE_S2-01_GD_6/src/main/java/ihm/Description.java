@@ -85,7 +85,7 @@ public class Description extends JFrame {
 		if (this.fromage.getArticles().get(0).getQuantitéEnStock() > 0) {
 			spinner.setModel(new SpinnerNumberModel(1, 1, this.fromage.getArticles().get(0).getQuantitéEnStock(), 1));
 		} else {
-			spinner.setModel(new SpinnerNumberModel(1, 1, 1, 1));
+			spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
 			RuptureDeStock rds = new RuptureDeStock();
         	rds.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             rds.setVisible(true);
@@ -151,10 +151,10 @@ public class Description extends JFrame {
         			RuptureDeStock rds = new RuptureDeStock();
                 	rds.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     rds.setVisible(true);
+                    spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
         		} else {
         			spinner.setModel(new SpinnerNumberModel(1, 1, art.getQuantitéEnStock(), 1));
         		}
-        		System.out.println(art.getQuantitéEnStock());
         	}
         };
 	}
