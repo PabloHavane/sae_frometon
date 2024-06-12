@@ -47,6 +47,7 @@ public class NosFromages extends JFrame {
     private String typeCourant;
     private Panier panier;
     private JButton btnPanier;
+    private JLabel lblIcone;
 
 	/**
      * Launch the application.
@@ -99,19 +100,19 @@ public class NosFromages extends JFrame {
         contentPane.add(haut, BorderLayout.NORTH);
         haut.setLayout(new BorderLayout(0, 0));
 
-        JPanel panel = new JPanel();
-        haut.add(panel);
+        JPanel panelTitre = new JPanel();
+        haut.add(panelTitre);
 
-        JLabel lblNewLabel = new JLabel("Nos fromages ");
-        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNewLabel.setForeground(new Color(255, 128, 0));
-        lblNewLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
-        panel.add(lblNewLabel);
+        JLabel lblTitre = new JLabel("Nos fromages ");
+        lblTitre.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitre.setForeground(new Color(255, 128, 0));
+        lblTitre.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+        panelTitre.add(lblTitre);
 
-        JLabel lblNewLabel_1 = new JLabel("");
-        lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromageprepareepixel.png"));
-        lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(lblNewLabel_1);
+        lblIcone = new JLabel("");
+        lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromageprepareepixel.png"));
+        lblIcone.setHorizontalAlignment(SwingConstants.CENTER);
+        panelTitre.add(lblIcone);
 
         btnPanier = new JButton();
         getBtnPanier().setText(formatFloat(this.panier.getMontant()) + " €");
@@ -129,14 +130,14 @@ public class NosFromages extends JFrame {
         JPanel bas = new JPanel();
         contentPane.add(bas, BorderLayout.SOUTH);
 
-        JPanel panel_1 = new JPanel();
-        panel_1.setBorder(new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Filtre", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
-        bas.add(panel_1);
-        panel_1.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 0));
+        JPanel panelFiltre = new JPanel();
+        panelFiltre.setBorder(new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Filtre", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
+        bas.add(panelFiltre);
+        panelFiltre.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 0));
 
-        JLabel lblNewLabel_2 = new JLabel("");
-        lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromage.png"));
-        panel_1.add(lblNewLabel_2);
+        JLabel lblIconeBas = new JLabel("");
+        lblIconeBas.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromage.png"));
+        panelFiltre.add(lblIconeBas);
 
         this.comboBoxType = new JComboBox<>();
         this.comboBoxType.addItem("Tous les fromages");
@@ -144,7 +145,7 @@ public class NosFromages extends JFrame {
             this.comboBoxType.addItem(t.getTypeDeLait());
         }
         comboBoxType.addActionListener(trierListeSelonType());
-        panel_1.add(this.comboBoxType);
+        panelFiltre.add(this.comboBoxType);
 
         JButton Bouton = new JButton("Quitter");
         Bouton.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -166,6 +167,15 @@ public class NosFromages extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		String typeLaitSelec = (String) comboBoxType.getSelectedItem();
         		typeCourant = typeLaitSelec;
+        		if (typeCourant.equals("Vache")) {
+        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\vache.png"));
+        		} else if (typeCourant.equals("Brebis")) {
+        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\brebis.png"));
+        		} else if (typeCourant.equals("Chèvre")) {
+        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chevre.png"));
+        		} else {
+        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromageprepareepixel.png"));;
+        		}
         		majListeFromage();
         	}
         };
