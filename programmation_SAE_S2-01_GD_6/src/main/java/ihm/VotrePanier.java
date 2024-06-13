@@ -254,12 +254,26 @@ public class VotrePanier extends JFrame {
 		panel_button.add(btnValider);
 		
 		JButton btnVider = new JButton("Vider le panier");
-		btnVider.addActionListener(ouvertureFenVVP(this.nosFromages, this));
+		btnVider.addActionListener(validerViderPanier());
 		panel_button.add(btnVider);
 		
 		JButton btnContinuer = new JButton("Continuer mes achats");
 		btnContinuer.addActionListener(continuerAchatsFermeturePanier());
 		panel_button.add(btnContinuer);
+	}
+	
+	/**
+	 * @return the table
+	 */
+	public JTable getTable() {
+		return table;
+	}
+
+	/**
+	 * @return the comboBoxTransporteur
+	 */
+	public JComboBox<String> getComboBoxTransporteur() {
+		return comboBoxTransporteur;
 	}
 
 	private ActionListener supprimerLignePanier() {
@@ -301,48 +315,8 @@ public class VotrePanier extends JFrame {
 	    NumberFormat formatter = new DecimalFormat("#0.00");
 	    return formatter.format(value);
 	}
-	
-	/**
-	 * @return the table
-	 */
-	public JTable getTable() {
-		return table;
-	}
 
-	/**
-	 * @return the textFieldSousTotal
-	 */
-	public JTextField getTextFieldSousTotal() {
-		return textFieldSousTotal;
-	}
 
-	/**
-	 * @return the textFieldExpedition
-	 */
-	public JTextField getTextFieldExpedition() {
-		return textFieldExpedition;
-	}
-
-	/**
-	 * @return the textFieldTotal
-	 */
-	public JTextField getTextFieldTotal() {
-		return textFieldTotal;
-	}
-
-	/**
-	 * @return the panier
-	 */
-	public Panier getPanier() {
-		return panier;
-	}
-
-	/**
-	 * @return the comboBoxTransporteur
-	 */
-	public JComboBox<String> getComboBoxTransporteur() {
-		return comboBoxTransporteur;
-	}
 
 	private ActionListener rafraichirLePanier() {
 		return new ActionListener() {
@@ -374,18 +348,18 @@ public class VotrePanier extends JFrame {
 	}
 
 
-	private ActionListener ouvertureFenVVP(NosFromages nf, VotrePanier vp) {
+	private ActionListener validerViderPanier() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int choix = JOptionPane.showConfirmDialog(VotrePanier.this, "Voulez-vous vraiment vider le panier ?", "Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (choix == JOptionPane.YES_OPTION) {
-					DefaultTableModel model = (DefaultTableModel) getTable().getModel();
+					DefaultTableModel model = (DefaultTableModel) table.getModel();
 					model.setRowCount(0);
 					panier.viderPanier();
 					nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
-					getTextFieldSousTotal().setText(formatFloat(panier.getMontant()) + " €");
-					getTextFieldExpedition().setText(formatFloat(panier.fraisDeLivraison((String) getComboBoxTransporteur().getSelectedItem())) + " €");
-					getTextFieldTotal().setText(formatFloat(panier.totalAvecExpedition((String) getComboBoxTransporteur().getSelectedItem())) + " €");
+					textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
+					textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+					textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 					dispose();
 				} else if (choix == JOptionPane.NO_OPTION) {
 				    dispose();
