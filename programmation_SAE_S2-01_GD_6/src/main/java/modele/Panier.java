@@ -79,7 +79,7 @@ public class Panier {
 	    }
 
 	    article.setQuantitéEnStock(article.getQuantitéEnStock() + quantité);
-	    this.montant += quantité * article.getPrixTTC();
+	    this.montant -= quantité * article.getPrixTTC();
 	}
 
 	public float fraisDeLivraison(String livreur) {
