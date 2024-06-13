@@ -102,7 +102,8 @@ public class VotrePanier extends JFrame {
 		btnRafraichir.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\rafraichir.png"));
 		panelRafraichir.add(btnRafraichir);
 		
-		JButton btnSupprLignePanier = new JButton("Supprimer ligne");
+		JButton btnSupprLignePanier = new JButton(" ");
+		btnSupprLignePanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\poubelle.png"));
 		btnSupprLignePanier.addActionListener(supprimerLignePanier());
 		panelRafraichir.add(btnSupprLignePanier);
 		
@@ -278,7 +279,7 @@ public class VotrePanier extends JFrame {
     				textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
     				nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
                 } else {
-                    JOptionPane.showMessageDialog(VotrePanier.this, "Aucune ligne sélectionnée", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(VotrePanier.this, "Aucun article sélectionné", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
 			}
 		};
@@ -376,9 +377,21 @@ public class VotrePanier extends JFrame {
 	private ActionListener ouvertureFenVVP(NosFromages nf, VotrePanier vp) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ValiderViderPanier vvp = new ValiderViderPanier(vp, nf);
-				vvp.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                vvp.setVisible(true);
+				int choix = JOptionPane.showConfirmDialog(VotrePanier.this, "Voulez-vous vraiment vider le panier ?", "Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (choix == JOptionPane.YES_OPTION) {
+					DefaultTableModel model = (DefaultTableModel) getTable().getModel();
+					model.setRowCount(0);
+					panier.viderPanier();
+					nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
+					getTextFieldSousTotal().setText(formatFloat(panier.getMontant()) + " €");
+					getTextFieldExpedition().setText(formatFloat(panier.fraisDeLivraison((String) getComboBoxTransporteur().getSelectedItem())) + " €");
+					getTextFieldTotal().setText(formatFloat(panier.totalAvecExpedition((String) getComboBoxTransporteur().getSelectedItem())) + " €");
+					dispose();
+				} else if (choix == JOptionPane.NO_OPTION) {
+				    dispose();
+				} else if (choix == JOptionPane.CANCEL_OPTION) {
+				    // Ne rien faire
+				}
 			}
 		};
 	}

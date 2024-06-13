@@ -21,6 +21,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -195,9 +196,7 @@ public class NosFromages extends JFrame {
             		framePanier.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     framePanier.setVisible(true);
             	} else {
-            		PanierVide panierVide = new PanierVide();
-                    panierVide.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    panierVide.setVisible(true);
+            		JOptionPane.showMessageDialog(NosFromages.this, "Votre panier est vide", "Information", JOptionPane.INFORMATION_MESSAGE);
             	}
             }
         };
