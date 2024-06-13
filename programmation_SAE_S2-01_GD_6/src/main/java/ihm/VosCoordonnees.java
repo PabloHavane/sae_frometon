@@ -32,14 +32,14 @@ public class VosCoordonnees extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JTextField textFieldNom;
+	private JTextField textFieldPrenom;
+	private JTextField textFieldAdresse;
+	private JTextField textFieldAdresseComp;
+	private JTextField textFieldCP;
+	private JTextField textFieldVille;
+	private JTextField textFieldTelephone;
+	private JTextField textFieldMail;
 	private JRadioButton CarteDeCredit;
 	private JRadioButton Paypal;
 	private JRadioButton PaiementParCheque;
@@ -69,107 +69,107 @@ public class VosCoordonnees extends JFrame {
 		this.setContentPane(this.contentPane);
 		this.contentPane.setLayout(new BorderLayout(0, 0));
 
-		JPanel haut = new JPanel();
-		this.contentPane.add(haut, BorderLayout.NORTH);
-		haut.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel panelTitre = new JPanel();
+		this.contentPane.add(panelTitre, BorderLayout.NORTH);
+		panelTitre.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		JLabel TitreCoordonées = new JLabel("Vos Coordonnées");
+		JLabel TitreCoordonées = new JLabel("Vos Coordonnées ");
 		TitreCoordonées.setForeground(new Color(255, 128, 0));
 		TitreCoordonées.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
-		haut.add(TitreCoordonées);
+		panelTitre.add(TitreCoordonées);
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(
 				"C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Maison.png"));
-		haut.add(lblNewLabel);
+		panelTitre.add(lblNewLabel);
 
-		JPanel centre = new JPanel();
-		this.contentPane.add(centre, BorderLayout.CENTER);
-		centre.setLayout(new GridLayout(0, 2, 0, 0));
+		JPanel panelChamps = new JPanel();
+		this.contentPane.add(panelChamps, BorderLayout.CENTER);
+		panelChamps.setLayout(new GridLayout(0, 2, 0, 0));
 
-		JLabel lblNewLabel_2 = new JLabel("Nom :");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblNewLabel_2);
+		JLabel lblNom = new JLabel("Nom :");
+		lblNom.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNom.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelChamps.add(lblNom);
 
-		this.textField = new JTextField();
-		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		this.textField.setMinimumSize(new Dimension(10, 19));
-		centre.add(this.textField);
-		this.textField.setColumns(10);
+		this.textFieldNom = new JTextField();
+		textFieldNom.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textFieldNom.setMinimumSize(new Dimension(10, 19));
+		panelChamps.add(this.textFieldNom);
+		this.textFieldNom.setColumns(10);
 
-		JLabel lblNewLabel_3 = new JLabel("Prénom :");
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblNewLabel_3);
+		JLabel lblPrenom = new JLabel("Prénom :");
+		lblPrenom.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblPrenom.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelChamps.add(lblPrenom);
 
-		this.textField_1 = new JTextField();
-		centre.add(this.textField_1);
-		this.textField_1.setColumns(10);
+		this.textFieldPrenom = new JTextField();
+		panelChamps.add(this.textFieldPrenom);
+		this.textFieldPrenom.setColumns(10);
 
 		JLabel lblAdresse = new JLabel("Adresse 1 : ");
 		lblAdresse.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblAdresse.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblAdresse);
+		panelChamps.add(lblAdresse);
 
-		this.textField_2 = new JTextField();
-		centre.add(this.textField_2);
-		this.textField_2.setColumns(10);
+		this.textFieldAdresse = new JTextField();
+		panelChamps.add(this.textFieldAdresse);
+		this.textFieldAdresse.setColumns(10);
 
-		JLabel lblNewLabel_4 = new JLabel("Adresse complémentaire : ");
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_4.setMinimumSize(new Dimension(5, 7));
-		centre.add(lblNewLabel_4);
+		JLabel lblAdresseComp = new JLabel("Adresse complémentaire : ");
+		lblAdresseComp.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblAdresseComp.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblAdresseComp.setMinimumSize(new Dimension(5, 7));
+		panelChamps.add(lblAdresseComp);
 
-		this.textField_3 = new JTextField();
-		centre.add(this.textField_3);
-		this.textField_3.setColumns(10);
+		this.textFieldAdresseComp = new JTextField();
+		panelChamps.add(this.textFieldAdresseComp);
+		this.textFieldAdresseComp.setColumns(10);
 
-		JLabel lblNewLabel_5 = new JLabel("Code Postal :");
-		lblNewLabel_5.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblNewLabel_5);
+		JLabel lblCP = new JLabel("Code Postal :");
+		lblCP.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblCP.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelChamps.add(lblCP);
 
-		this.textField_4 = new JTextField();
-		centre.add(this.textField_4);
-		this.textField_4.setColumns(10);
+		this.textFieldCP = new JTextField();
+		panelChamps.add(this.textFieldCP);
+		this.textFieldCP.setColumns(10);
 
-		JLabel lblNewLabel_6 = new JLabel("Ville :");
-		lblNewLabel_6.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblNewLabel_6);
+		JLabel lblVille = new JLabel("Ville :");
+		lblVille.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblVille.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelChamps.add(lblVille);
 
-		this.textField_5 = new JTextField();
-		centre.add(this.textField_5);
-		this.textField_5.setColumns(10);
+		this.textFieldVille = new JTextField();
+		panelChamps.add(this.textFieldVille);
+		this.textFieldVille.setColumns(10);
 
-		JLabel lblNewLabel_7 = new JLabel("Téléphone :");
-		lblNewLabel_7.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblNewLabel_7);
+		JLabel lblTelephone = new JLabel("Téléphone :");
+		lblTelephone.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblTelephone.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelChamps.add(lblTelephone);
 
-		this.textField_6 = new JTextField();
-		centre.add(this.textField_6);
-		this.textField_6.setColumns(10);
+		this.textFieldTelephone = new JTextField();
+		panelChamps.add(this.textFieldTelephone);
+		this.textFieldTelephone.setColumns(10);
 
-		JLabel lblNewLabel_8 = new JLabel("Mail :");
-		lblNewLabel_8.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		centre.add(lblNewLabel_8);
+		JLabel lblNewLabelMail = new JLabel("Mail :");
+		lblNewLabelMail.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabelMail.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelChamps.add(lblNewLabelMail);
 
-		this.textField_7 = new JTextField();
-		centre.add(this.textField_7);
-		this.textField_7.setColumns(10);
+		this.textFieldMail = new JTextField();
+		panelChamps.add(this.textFieldMail);
+		this.textFieldMail.setColumns(10);
 
-		JPanel bas = new JPanel();
-		this.contentPane.add(bas, BorderLayout.SOUTH);
-		bas.setLayout(new BorderLayout(0, 0));
+		JPanel panelBtn = new JPanel();
+		this.contentPane.add(panelBtn, BorderLayout.SOUTH);
+		panelBtn.setLayout(new BorderLayout(0, 0));
 
 		JPanel MoyenPaiement = new JPanel();
 		MoyenPaiement.setBorder(new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Moyen de paiement",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
-		bas.add(MoyenPaiement, BorderLayout.NORTH);
+		panelBtn.add(MoyenPaiement, BorderLayout.NORTH);
 		MoyenPaiement.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		this.CarteDeCredit = new JRadioButton("Carte de crédit");
@@ -221,7 +221,7 @@ public class VosCoordonnees extends JFrame {
 		Newsletter.setBorder(
 				new TitledBorder(new LineBorder(new Color(255, 128, 0), 2), "Abonnement \u00E0 notre Newsletter",
 						TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 128, 0)));
-		bas.add(Newsletter, BorderLayout.CENTER);
+		panelBtn.add(Newsletter, BorderLayout.CENTER);
 
 		this.Oui = new JRadioButton("Oui");
 		this.Oui.addActionListener(new ActionListener() {
@@ -250,16 +250,16 @@ public class VosCoordonnees extends JFrame {
 		Boutons.setBounds(new Rectangle(3, 3, 3, 3));
 		FlowLayout fl_Boutons = (FlowLayout) Boutons.getLayout();
 		fl_Boutons.setAlignment(FlowLayout.RIGHT);
-		bas.add(Boutons, BorderLayout.SOUTH);
+		panelBtn.add(Boutons, BorderLayout.SOUTH);
 
-		JButton btnNewButton = new JButton("OK");
-		btnNewButton.addActionListener(genererFacture());
-		btnNewButton.setToolTipText("OK");
-		Boutons.add(btnNewButton);
+		JButton btnOK = new JButton("OK");
+		btnOK.addActionListener(genererFacture());
+		btnOK.setToolTipText("OK");
+		Boutons.add(btnOK);
 
-		JButton Annuler = new JButton("Annuler");
-		Annuler.addActionListener(fermerFenCoor());
-		Boutons.add(Annuler);
+		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addActionListener(fermerFenCoor());
+		Boutons.add(btnAnnuler);
 	}
 
 	private ActionListener fermerFenCoor() {
@@ -272,9 +272,9 @@ public class VosCoordonnees extends JFrame {
 	}
 
 	private boolean champsRemplis() {
-		return !textField.getText().isEmpty() && !textField_1.getText().isEmpty() && !textField_2.getText().isEmpty()
-				&& !textField_4.getText().isEmpty() && !textField_5.getText().isEmpty()
-				&& !textField_6.getText().isEmpty() && !textField_7.getText().isEmpty()
+		return !textFieldNom.getText().isEmpty() && !textFieldPrenom.getText().isEmpty() && !textFieldAdresse.getText().isEmpty()
+				&& !textFieldCP.getText().isEmpty() && !textFieldVille.getText().isEmpty()
+				&& !textFieldTelephone.getText().isEmpty() && !textFieldMail.getText().isEmpty()
 				&& VosCoordonnees.this.moyenDePaiement != null
 				&& (VosCoordonnees.this.Non.isSelected() || VosCoordonnees.this.Oui.isSelected());
 	}
@@ -284,14 +284,14 @@ public class VosCoordonnees extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (champsRemplis()) {
-					String nom = VosCoordonnees.this.textField.getText();
-					String prenom = VosCoordonnees.this.textField_1.getText();
-					String adresse1 = VosCoordonnees.this.textField_2.getText();
-					String adresse2 = VosCoordonnees.this.textField_3.getText();
-					String CP = VosCoordonnees.this.textField_4.getText();
-					String Ville = VosCoordonnees.this.textField_5.getText();
-					String Telephone = VosCoordonnees.this.textField_6.getText();
-					String Mail = VosCoordonnees.this.textField_7.getText();
+					String nom = VosCoordonnees.this.textFieldNom.getText();
+					String prenom = VosCoordonnees.this.textFieldPrenom.getText();
+					String adresse1 = VosCoordonnees.this.textFieldAdresse.getText();
+					String adresse2 = VosCoordonnees.this.textFieldAdresseComp.getText();
+					String CP = VosCoordonnees.this.textFieldCP.getText();
+					String Ville = VosCoordonnees.this.textFieldVille.getText();
+					String Telephone = VosCoordonnees.this.textFieldTelephone.getText();
+					String Mail = VosCoordonnees.this.textFieldMail.getText();
 					VotreFacture frame = new VotreFacture(nom, prenom, adresse1, adresse2, CP, Ville, Telephone, Mail,
 							VosCoordonnees.this.moyenDePaiement, panier, votrePanier);
 					frame.setVisible(true);

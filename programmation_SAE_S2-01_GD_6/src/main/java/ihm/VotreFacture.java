@@ -80,7 +80,7 @@ public class VotreFacture extends JFrame {
 		htmlContent.append(
 				"<img src='file:C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png'>");
 		htmlContent.append("<h2>FACTURE La Cave à Frometon<h2>");
-		htmlContent.append("<p>Commande à régler du ").append(getCurrentDateTime()).append("</p>");
+		htmlContent.append("<p>Commande du ").append(getCurrentDateTime()).append("</p>");
 		htmlContent.append("<h3>INFORMATIONS CLIENT</h3>");
 		htmlContent.append("<p>").append(prenom).append(" ").append(nom).append("<br>");
 		htmlContent.append("Adresse : <em>").append(adresse1).append("</em><br>");
