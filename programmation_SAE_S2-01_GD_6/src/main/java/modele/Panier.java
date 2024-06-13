@@ -1,7 +1,10 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
 
 public class Panier {
 
@@ -96,7 +99,27 @@ public class Panier {
 		this.panier.clear();
 		this.quantité.clear();
 	}
+	
+	public void supprimerUnArticlePanier(Article article) {
+	    Iterator<Article> articleIterator = panier.iterator();
+	    Iterator<Integer> quantiteIterator = quantité.iterator();
+	    int i = 0;
 
+	    while (articleIterator.hasNext()) {
+	        Article art = articleIterator.next();
+	        quantiteIterator.next(); // Avance l'itérateur de quantité
+
+	        if (art.equals(article)) {
+	            art.setQuantitéEnStock(art.getQuantitéEnStock() + this.quantité.get(i));
+	            this.montant -= art.getPrixTTC() * this.quantité.get(i);
+	            articleIterator.remove();
+	            quantiteIterator.remove();
+	            break;
+	        }
+	        i++;
+	    }
+	}
+	
 	public float totalAvecExpedition(String livreur) {
 		return this.fraisDeLivraison(livreur) + this.montant;
 	}

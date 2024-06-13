@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -296,9 +297,8 @@ public class VosCoordonnees extends JFrame {
 							VosCoordonnees.this.moyenDePaiement, panier, votrePanier);
 					frame.setVisible(true);
 				} else {
-					ChampManquant cm = new ChampManquant();
-					cm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-					cm.setVisible(true);
+					String messageErreur = new String("Au moins un champ n'a pas été rempli correctement \n (à l'exception d'adresse complémentaire)");
+					JOptionPane.showMessageDialog(VosCoordonnees.this, messageErreur, "Erreur", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		};

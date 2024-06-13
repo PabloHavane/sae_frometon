@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -86,9 +87,7 @@ public class Description extends JFrame {
 			spinner.setModel(new SpinnerNumberModel(1, 1, this.fromage.getArticles().get(0).getQuantitéEnStock(), 1));
 		} else {
 			spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
-			RuptureDeStock rds = new RuptureDeStock();
-        	rds.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            rds.setVisible(true);
+			JOptionPane.showMessageDialog(this, "Attention, un article de ce fromage est en rupture de stock", "Avertissement", JOptionPane.WARNING_MESSAGE);
 		}
 		panelComboSpin.add(spinner);
 		
@@ -148,9 +147,7 @@ public class Description extends JFrame {
                     }
                 }
         		if (art.getQuantitéEnStock() == 0) {
-        			RuptureDeStock rds = new RuptureDeStock();
-                	rds.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    rds.setVisible(true);
+        			JOptionPane.showMessageDialog(Description.this, "Attention, cet article est en rupture de stock", "Avertissement", JOptionPane.WARNING_MESSAGE);
                     spinner.setModel(new SpinnerNumberModel(0, 0, 0, 0));
         		} else {
         			spinner.setModel(new SpinnerNumberModel(1, 1, art.getQuantitéEnStock(), 1));

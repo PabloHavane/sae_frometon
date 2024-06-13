@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Component;
@@ -26,6 +28,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -99,6 +102,11 @@ public class VotrePanier extends JFrame {
 		btnRafraichir.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\rafraichir.png"));
 		panelRafraichir.add(btnRafraichir);
 		
+		JButton btnSupprLignePanier = new JButton(" ");
+		btnSupprLignePanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\poubelle.png"));
+		btnSupprLignePanier.addActionListener(supprimerLignePanier());
+		panelRafraichir.add(btnSupprLignePanier);
+		
 		JScrollPane scrollPane = new JScrollPane();
         this.contentPane.add(scrollPane, BorderLayout.CENTER);
 
@@ -112,6 +120,13 @@ public class VotrePanier extends JFrame {
         		" ", "Produit", "Prix", "Quantit\u00E9", "Total"
         	}
         ));
+        
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(true);
+        table.setColumnSelectionAllowed(false);
+        table.setSelectionBackground(Color.YELLOW);
+        table.setSelectionForeground(Color.RED);
+
         
         // Afficher l'image dans le JTable
         table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
@@ -135,7 +150,7 @@ public class VotrePanier extends JFrame {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
         
-        this.table.setEnabled(false);
+        this.table.setEnabled(true);
         scrollPane.setViewportView(this.table);
 		
 		JPanel panelTotalEtBoutons = new JPanel();
@@ -247,6 +262,29 @@ public class VotrePanier extends JFrame {
 		panel_button.add(btnContinuer);
 	}
 
+	private ActionListener supprimerLignePanier() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    Article article = panier.getPanier().get(selectedRow);
+                    panier.supprimerUnArticlePanier(article);
+                    if (panier.isPanierEmpty()) {
+                    	nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
+                    	dispose();
+                    }
+                    recupArticlesPanier();
+                    textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
+    				textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
+    				textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
+    				nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
+                } else {
+                    JOptionPane.showMessageDialog(VotrePanier.this, "Aucun article sélectionné", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+			}
+		};
+	}
+
 	private ActionListener validationDuPanier(VotrePanier vp) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -316,30 +354,44 @@ public class VotrePanier extends JFrame {
 			}
 		};
 	}
-
+	
 	private void recupArticlesPanier() {
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		model.setRowCount(0);
-		for (int i = 0; i < this.panier.getPanier().size(); i++) {
-        	Article article = this.panier.getPanier().get(i);
-        	DefaultTableModel model2 = (DefaultTableModel) table.getModel();
-        	model2.addRow(new Object[] {
-        		new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
-        		article.getFromage().getDésignation() + " " +
-        		article.getClé(),
-        		formatFloat(article.getPrixTTC()) + " €",
-        		this.panier.getQuantité().get(i),
-        		formatFloat(article.getPrixTTC() * this.panier.getQuantité().get(i)) + " €"
-        	});	
-        }
+	    DefaultTableModel model = (DefaultTableModel) table.getModel();
+	    model.setRowCount(0); // Réinitialiser le modèle de table
+
+	    for (int i = 0; i < this.panier.getPanier().size(); i++) {
+	        Article article = this.panier.getPanier().get(i);
+	        
+	        // Ajouter une nouvelle ligne au modèle de table avec les informations de l'article
+	        model.addRow(new Object[] {
+	            new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
+	            article.getFromage().getDésignation() + " " + article.getClé(),
+	            formatFloat(article.getPrixTTC()) + " €",
+	            this.panier.getQuantité().get(i),
+	            formatFloat(article.getPrixTTC() * this.panier.getQuantité().get(i)) + " €"
+	        });
+	    }
 	}
+
 
 	private ActionListener ouvertureFenVVP(NosFromages nf, VotrePanier vp) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ValiderViderPanier vvp = new ValiderViderPanier(vp, nf);
-				vvp.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                vvp.setVisible(true);
+				int choix = JOptionPane.showConfirmDialog(VotrePanier.this, "Voulez-vous vraiment vider le panier ?", "Confirmation", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (choix == JOptionPane.YES_OPTION) {
+					DefaultTableModel model = (DefaultTableModel) getTable().getModel();
+					model.setRowCount(0);
+					panier.viderPanier();
+					nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
+					getTextFieldSousTotal().setText(formatFloat(panier.getMontant()) + " €");
+					getTextFieldExpedition().setText(formatFloat(panier.fraisDeLivraison((String) getComboBoxTransporteur().getSelectedItem())) + " €");
+					getTextFieldTotal().setText(formatFloat(panier.totalAvecExpedition((String) getComboBoxTransporteur().getSelectedItem())) + " €");
+					dispose();
+				} else if (choix == JOptionPane.NO_OPTION) {
+				    dispose();
+				} else if (choix == JOptionPane.CANCEL_OPTION) {
+				    // Ne rien faire
+				}
 			}
 		};
 	}
