@@ -22,20 +22,30 @@ import java.awt.Image;
 
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+
 import java.awt.CardLayout;
+
+import javax.swing.AbstractCellEditor;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -316,11 +326,10 @@ public class VotrePanier extends JFrame {
 	    return formatter.format(value);
 	}
 
-
-
 	private ActionListener rafraichirLePanier() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				majQteSpinner();
 				recupArticlesPanier();
 				textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
 				textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
@@ -335,18 +344,46 @@ public class VotrePanier extends JFrame {
 
 	    for (int i = 0; i < this.panier.getPanier().size(); i++) {
 	        Article article = this.panier.getPanier().get(i);
+	        int qtePanier = this.panier.getQuantité().get(i);
+	        int qteMaxEnStock = qtePanier + article.getQuantitéEnStock();
+	        System.out.println(qteMaxEnStock);
 	        
 	        // Ajouter une nouvelle ligne au modèle de table avec les informations de l'article
 	        model.addRow(new Object[] {
 	            new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
 	            article.getFromage().getDésignation() + " " + article.getClé(),
 	            formatFloat(article.getPrixTTC()) + " €",
-	            this.panier.getQuantité().get(i),
+	            qtePanier,
 	            formatFloat(article.getPrixTTC() * this.panier.getQuantité().get(i)) + " €"
 	        });
+	        
+	        JSpinner spinner = new JSpinner(new SpinnerNumberModel(qtePanier, 1, qteMaxEnStock, 1));
+	        
+	        //configureSpinnerForColumn(table, 3, this.panier.getQuantité().get(i), 1, maxQteEnStock, 1);
+	        //table.getColumnModel().getColumn(3).setCellEditor(new SpinnerEditor(qtePanier, 1, qteMaxEnStock, 1));
+	        table.getColumnModel().getColumn(3).setCellEditor(new SpinnerEditor(spinner));
 	    }
 	}
+	
+	private void majQteSpinner() {
+		int columnIndex = 3; // Index de la colonne "Quantité"
 
+		// Boucle pour parcourir chaque ligne du tableau
+		for (int row = 0; row < table.getRowCount(); row++) {
+		    // Récupérer la valeur de la cellule à la colonne spécifiée et à la ligne actuelle
+		    Object value = table.getValueAt(row, columnIndex);
+		    Article article = this.panier.getPanier().get(row);
+		    int qtePanier = panier.getQuantité().get(row);
+		    
+		    if (qtePanier < (int) value) {
+		    	panier.ajouterPanier(article, (int) value - qtePanier);
+		    }
+		    
+		    if (qtePanier > (int) value) {
+		    	panier.retirerDuPanier(article, qtePanier - (int) value);
+		    }
+		}
+	}
 
 	private ActionListener validerViderPanier() {
 		return new ActionListener() {
@@ -402,5 +439,32 @@ public class VotrePanier extends JFrame {
 			}
 		};
 	}
+	
+//	// Méthode pour configurer JSpinner pour une colonne spécifique
+//    private void configureSpinnerForColumn(JTable table, int columnIndex, int currentValue, int minValue, int maxValue, int step) {
+//        TableColumn column = table.getColumnModel().getColumn(columnIndex);
+//        column.setCellEditor(new SpinnerEditor(currentValue, minValue, maxValue, step));
+//    }
 
+    // Éditeur de cellule utilisant directement un JSpinner
+    static class SpinnerEditor extends DefaultCellEditor {
+        private JSpinner spinner;
+
+        public SpinnerEditor(JSpinner spinner) {
+        	super(new JTextField());
+            this.spinner = spinner;
+            //spinner.setModel(new SpinnerNumberModel(currentValue, minValue, maxValue, step)); // Modèle de spinner pour les quantités
+        }
+
+		@Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            spinner.setValue(value); // Définit la valeur actuelle du spinner en fonction de la cellule sélectionnée
+            return spinner;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
+    }
 }
