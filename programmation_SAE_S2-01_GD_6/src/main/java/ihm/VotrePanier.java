@@ -22,20 +22,30 @@ import java.awt.Image;
 
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.border.LineBorder;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+
 import java.awt.CardLayout;
+
+import javax.swing.AbstractCellEditor;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
@@ -55,6 +65,7 @@ public class VotrePanier extends JFrame {
 	private Panier panier;
 	private NosFromages nosFromages;
 	private JComboBox<String> comboBoxTransporteur;
+	private static JSpinner spinner;
 
 	/**
 	 * Create the frame.
@@ -316,12 +327,12 @@ public class VotrePanier extends JFrame {
 	    return formatter.format(value);
 	}
 
-
-
 	private ActionListener rafraichirLePanier() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				majQteSpinner();
 				recupArticlesPanier();
+				nosFromages.getBtnPanier().setText(formatFloat(panier.getMontant()) + " €");
 				textFieldSousTotal.setText(formatFloat(panier.getMontant()) + " €");
 				textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
 				textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
@@ -344,9 +355,31 @@ public class VotrePanier extends JFrame {
 	            this.panier.getQuantité().get(i),
 	            formatFloat(article.getPrixTTC() * this.panier.getQuantité().get(i)) + " €"
 	        });
+	        
+	        // Transformer les cellules de la colonne Qunatité en JSpinner
+	        table.getColumnModel().getColumn(3).setCellEditor(new SpinnerEditor());
 	    }
 	}
 
+	private void majQteSpinner() {
+		int columnIndex = 3; // Index de la colonne "Quantité"
+
+		// Boucle pour parcourir chaque ligne du tableau
+		for (int row = 0; row < table.getRowCount(); row++) {
+		    // Récupérer la valeur de la cellule à la colonne spécifiée et à la ligne actuelle
+		    Object value = table.getValueAt(row, columnIndex);
+		    Article article = this.panier.getPanier().get(row);
+		    int qtePanier = panier.getQuantité().get(row);
+		    
+		    if (qtePanier < (int) value) {
+		    	panier.ajouterPanier(article, (int) value - qtePanier);
+		    }
+		    
+		    if (qtePanier > (int) value) {
+		    	panier.retirerDuPanier(article, qtePanier - (int) value);
+		    }
+		}
+	}
 
 	private ActionListener validerViderPanier() {
 		return new ActionListener() {
@@ -403,4 +436,28 @@ public class VotrePanier extends JFrame {
 		};
 	}
 
+    static class SpinnerEditor extends DefaultCellEditor {
+        public SpinnerEditor() {
+            super(new JTextField());
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            Article article = ((VotrePanier) table.getTopLevelAncestor()).getPanier().getPanier().get(row);
+            int qtePanier = ((VotrePanier) table.getTopLevelAncestor()).getPanier().getQuantité().get(row);
+            int qteMaxEnStock = qtePanier + article.getQuantitéEnStock();
+            spinner = new JSpinner(new SpinnerNumberModel(qtePanier, 1, qteMaxEnStock, 1));
+            spinner.setValue(value); // Définit la valeur actuelle du spinner en fonction de la cellule sélectionnée
+            return spinner;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return spinner.getValue();
+        }
+    }
+
+    private Panier getPanier() {
+        return this.panier;
+    }
 }

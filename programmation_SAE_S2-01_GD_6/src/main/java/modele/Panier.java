@@ -64,7 +64,23 @@ public class Panier {
 	    article.setQuantitéEnStock(article.getQuantitéEnStock() - quantitéEffective);
 	    this.montant += quantitéEffective * article.getPrixTTC();
 	}
+	
+	public void retirerDuPanier(Article article, int quantité) {
+	    int indice = -1;
+	    for (int i = 0; i < this.panier.size(); i++) {
+	        if (this.panier.get(i).equals(article)) {
+	            indice = i;
+	            break;
+	        }
+	    }
 
+	    if (indice != -1) {
+	        this.quantité.set(indice, this.quantité.get(indice) - quantité);
+	    }
+
+	    article.setQuantitéEnStock(article.getQuantitéEnStock() + quantité);
+	    this.montant -= quantité * article.getPrixTTC();
+	}
 
 	public float fraisDeLivraison(String livreur) {
 		if (livreur.equals("Chronofresh")) {
