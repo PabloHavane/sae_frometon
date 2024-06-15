@@ -238,4 +238,35 @@ public class TestPanier {
 		assertFalse(this.panier.isPanierEmpty());
 	}
 
+	@Test
+	public void testSupprimerUnArticlePanierPlusieursArticleIdentiques() {
+		Article B = new Article(new Fromage("Test1"), "e", 5.0f);
+		B.setQuantitéEnStock(40);
+		this.panier.ajouterPanier(B, 3);
+		this.panier.ajouterPanier(B, 15);
+		this.panier.supprimerUnArticlePanier(B);
+		assertTrue(this.panier.isPanierEmpty());
+	}
+
+	@Test
+	public void testSupprimerUnArticlePanierDeuxArticleDifférentDansPanier() {
+		Article A = new Article(new Fromage("Test2"), "f", 5.0f);
+		Article B = new Article(new Fromage("Test1"), "e", 5.0f);
+		B.setQuantitéEnStock(40);
+		A.setQuantitéEnStock(40);
+		this.panier.ajouterPanier(B, 3);
+		this.panier.ajouterPanier(A, 15);
+		this.panier.ajouterPanier(B, 15);
+		this.panier.supprimerUnArticlePanier(B);
+		assertEquals(1, this.panier.getPanier().size());
+	}
+
+	@Test
+	public void testRetirerDuPanier() {
+		Article B = new Article(new Fromage("Test1"), "e", 5.0f);
+		B.setQuantitéEnStock(45);
+		this.panier.ajouterPanier(B, 15);
+		this.panier.retirerDuPanier(B, 5);
+		assertEquals(35, B.getQuantitéEnStock());
+	}
 }
