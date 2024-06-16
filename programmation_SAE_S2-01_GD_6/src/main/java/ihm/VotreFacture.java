@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -41,8 +42,7 @@ public class VotreFacture extends JFrame {
 		this.panier = panier;
 		this.votrePanier = vp;
 		setTitle("La Cave à Frometon");
-		ImageIcon img = new ImageIcon(
-				"C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+		ImageIcon img = new ImageIcon(VotreFacture.class.getResource("/images/fromages/cave.png"));
 		setIconImage(img.getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setBounds(100, 100, 590, 550);
@@ -77,8 +77,9 @@ public class VotreFacture extends JFrame {
 
 		StringBuilder htmlContent = new StringBuilder();
 		htmlContent.append("<html><body>");
-		htmlContent.append(
-				"<img src='file:C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png'>");
+
+		htmlContent.append("<img src='").append(VotreFacture.class.getResource("/images/fromages/cave.png")).append("'>");
+
 		htmlContent.append("<h2>FACTURE La Cave à Frometon<h2>");
 		htmlContent.append("<p>Commande du ").append(getCurrentDateTime()).append("</p>");
 		htmlContent.append("<h3>INFORMATIONS CLIENT</h3>");
@@ -105,7 +106,7 @@ public class VotreFacture extends JFrame {
 			for (int col = 0; col < table.getColumnCount(); col++) {
 				Object value = table.getValueAt(row, col);
 				if (value != null && value.toString().endsWith(".jpg")) {
-					htmlContent.append("<td><img src='file:").append(value.toString())
+					htmlContent.append("<td><img src='").append(value.toString())
 							.append("' width='100' height='100'></td>");
 				} else {
 					htmlContent.append("<td>").append(value).append("</td>");

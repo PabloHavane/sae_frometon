@@ -71,7 +71,7 @@ public class NosFromages extends JFrame {
      */
     public NosFromages() {
     	setTitle("La Cave à Frometon");
-    	ImageIcon img = new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+    	ImageIcon img = new ImageIcon(NosFromages.class.getResource("/images/fromages/cave.png"));
     	setIconImage(img.getImage());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 452, 424);
@@ -111,7 +111,7 @@ public class NosFromages extends JFrame {
         panelTitre.add(lblTitre);
 
         lblIcone = new JLabel("");
-        lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromageprepareepixel.png"));
+        lblIcone.setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/Fromageprepareepixel.png")));
         lblIcone.setHorizontalAlignment(SwingConstants.CENTER);
         panelTitre.add(lblIcone);
 
@@ -121,7 +121,7 @@ public class NosFromages extends JFrame {
 
         getBtnPanier().setBackground(new Color(255, 128, 0));
         getBtnPanier().setForeground(new Color(0, 0, 0));
-        getBtnPanier().setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\panier.png"));
+        getBtnPanier().setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/panier.png")));
 
         getBtnPanier().setHorizontalAlignment(SwingConstants.RIGHT);
         getBtnPanier().setBounds(new Rectangle(20, 0, 0, 0));
@@ -137,7 +137,7 @@ public class NosFromages extends JFrame {
         panelFiltre.setLayout(new FlowLayout(FlowLayout.LEFT, 50, 0));
 
         JLabel lblIconeBas = new JLabel("");
-        lblIconeBas.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromage.png"));
+        lblIconeBas.setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/Fromage.png")));
         panelFiltre.add(lblIconeBas);
 
         this.comboBoxType = new JComboBox<>();
@@ -169,13 +169,13 @@ public class NosFromages extends JFrame {
         		String typeLaitSelec = (String) comboBoxType.getSelectedItem();
         		typeCourant = typeLaitSelec;
         		if (typeCourant.equals("Vache")) {
-        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\vache.png"));
+        			lblIcone.setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/vache.png")));
         		} else if (typeCourant.equals("Brebis")) {
-        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\brebis.png"));
+        			lblIcone.setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/brebis.png")));
         		} else if (typeCourant.equals("Chèvre")) {
-        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chevre.png"));
+        			lblIcone.setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/chevre.png")));
         		} else {
-        			lblIcone.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Fromageprepareepixel.png"));;
+        			lblIcone.setIcon(new ImageIcon(NosFromages.class.getResource("/images/fromages/Fromageprepareepixel.png")));
         		}
         		majListeFromage();
         	}

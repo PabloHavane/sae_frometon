@@ -75,7 +75,7 @@ public class VotrePanier extends JFrame {
 		this.nosFromages = nf;
 		
 		setTitle("La Cave à Frometon");
-    	ImageIcon img = new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+    	ImageIcon img = new ImageIcon(VotrePanier.class.getResource("/images/fromages/cave.png"));
     	setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 750, 450);
@@ -95,7 +95,7 @@ public class VotrePanier extends JFrame {
 		panelTitre.add(panelTitreEtIcone);
 		
 		JLabel lblIconePanier = new JLabel(" ");
-		lblIconePanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\panier.png"));
+		lblIconePanier.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/panier.png")));
 		panelTitreEtIcone.add(lblIconePanier);
 
 		JLabel lblTitre = new JLabel("Votre panier");
@@ -110,11 +110,11 @@ public class VotrePanier extends JFrame {
 		
 		JButton btnRafraichir = new JButton("");
 		btnRafraichir.addActionListener(rafraichirLePanier());
-		btnRafraichir.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\rafraichir.png"));
+		btnRafraichir.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/rafraichir.png")));
 		panelRafraichir.add(btnRafraichir);
 		
 		JButton btnSupprLignePanier = new JButton(" ");
-		btnSupprLignePanier.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\poubelle.png"));
+		btnSupprLignePanier.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/poubelle.png")));
 		btnSupprLignePanier.addActionListener(supprimerLignePanier());
 		panelRafraichir.add(btnSupprLignePanier);
 		
@@ -190,7 +190,7 @@ public class VotrePanier extends JFrame {
 		panelTransporteur.add(panelChoixTrans);
 		
 		JLabel lblIconeTransporteur = new JLabel();
-		lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
+		lblIconeTransporteur.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/colissimo.png")));
 		panelChoixTrans.add(lblIconeTransporteur);
 		
 		comboBoxTransporteur = new JComboBox<String>();
@@ -349,7 +349,7 @@ public class VotrePanier extends JFrame {
 	        
 	        // Ajouter une nouvelle ligne au modèle de table avec les informations de l'article
 	        model.addRow(new Object[] {
-	            new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur40\\" + article.getFromage().getNomImage() + ".jpg"),
+	            new ImageIcon(VotrePanier.class.getResource("/images/fromages/hauteur40/" + article.getFromage().getNomImage() + ".jpg")),
 	            article.getFromage().getDésignation() + " " + article.getClé(),
 	            formatFloat(article.getPrixTTC()) + " €",
 	            this.panier.getQuantité().get(i),
@@ -417,17 +417,17 @@ public class VotrePanier extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				switch(comboBoxTransporteur.getSelectedIndex()) {
 					case 0 :
-						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\colissimo.png"));
+						lblIconeTransporteur.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/colissimo.png")));
 						textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						break;
 					case 1 :
-						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronorelais.png"));
+						lblIconeTransporteur.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/chronorelais.png")));
 						textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						break;
 					case 2 :
-						lblIconeTransporteur.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\chronofresh.png"));
+						lblIconeTransporteur.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/chronofresh.png")));
 						textFieldExpedition.setText(formatFloat(panier.fraisDeLivraison((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						textFieldTotal.setText(formatFloat(panier.totalAvecExpedition((String) comboBoxTransporteur.getSelectedItem())) + " €");
 						break;

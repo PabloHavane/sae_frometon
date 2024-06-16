@@ -57,7 +57,7 @@ public class Description extends JFrame {
 		this.nosFromages = nosFrometons;
 		
 		setTitle("La Cave à Frometon");
-    	ImageIcon img = new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+    	ImageIcon img = new ImageIcon(Description.class.getResource("/images/fromages/cave.png"));
     	setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 680, 400);
@@ -120,7 +120,7 @@ public class Description extends JFrame {
 		
 		JLabel lblImage = new JLabel("");
 		lblImage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImage.setIcon(new ImageIcon("C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\hauteur200\\" + this.fromage.getNomImage() + ".jpg"));
+		lblImage.setIcon(new ImageIcon(VotrePanier.class.getResource("/images/fromages/hauteur200/" + this.fromage.getNomImage() + ".jpg")));
 		panelImage.add(lblImage, BorderLayout.CENTER);
 		
 		JPanel panelDescription = new JPanel();

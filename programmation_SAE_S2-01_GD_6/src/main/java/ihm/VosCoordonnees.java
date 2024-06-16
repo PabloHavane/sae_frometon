@@ -59,8 +59,7 @@ public class VosCoordonnees extends JFrame {
 		this.panier = lePanier;
 		this.votrePanier = vp;
 		setTitle("La Cave à Frometon");
-		ImageIcon img = new ImageIcon(
-				"C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\cave.png");
+		ImageIcon img = new ImageIcon(VosCoordonnees.class.getResource("/images/fromages/cave.png"));
 		setIconImage(img.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 600, 400);
@@ -80,8 +79,7 @@ public class VosCoordonnees extends JFrame {
 		panelTitre.add(TitreCoordonées);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(
-				"C:\\Users\\oscar\\git\\repo_fromage\\programmation_SAE_S2-01_GD_6\\src\\main\\resources\\images\\fromages\\Maison.png"));
+		lblNewLabel.setIcon(new ImageIcon(VosCoordonnees.class.getResource("/images/fromages/Maison.png")));
 		panelTitre.add(lblNewLabel);
 
 		JPanel panelChamps = new JPanel();
@@ -273,10 +271,10 @@ public class VosCoordonnees extends JFrame {
 	}
 
 	private boolean champsRemplis() {
-		return !textFieldNom.getText().isEmpty() && !textFieldPrenom.getText().isEmpty() && !textFieldAdresse.getText().isEmpty()
-				&& !textFieldCP.getText().isEmpty() && !textFieldVille.getText().isEmpty()
-				&& !textFieldTelephone.getText().isEmpty() && !textFieldMail.getText().isEmpty()
-				&& VosCoordonnees.this.moyenDePaiement != null
+		return !textFieldNom.getText().isEmpty() && !textFieldPrenom.getText().isEmpty()
+				&& !textFieldAdresse.getText().isEmpty() && !textFieldCP.getText().isEmpty()
+				&& !textFieldVille.getText().isEmpty() && !textFieldTelephone.getText().isEmpty()
+				&& !textFieldMail.getText().isEmpty() && VosCoordonnees.this.moyenDePaiement != null
 				&& (VosCoordonnees.this.Non.isSelected() || VosCoordonnees.this.Oui.isSelected());
 	}
 
@@ -297,8 +295,10 @@ public class VosCoordonnees extends JFrame {
 							VosCoordonnees.this.moyenDePaiement, panier, votrePanier);
 					frame.setVisible(true);
 				} else {
-					String messageErreur = new String("Au moins un champ n'a pas été rempli correctement \n (à l'exception d'adresse complémentaire)");
-					JOptionPane.showMessageDialog(VosCoordonnees.this, messageErreur, "Erreur", JOptionPane.ERROR_MESSAGE);
+					String messageErreur = new String(
+							"Au moins un champ n'a pas été rempli correctement \n (à l'exception d'adresse complémentaire)");
+					JOptionPane.showMessageDialog(VosCoordonnees.this, messageErreur, "Erreur",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		};
