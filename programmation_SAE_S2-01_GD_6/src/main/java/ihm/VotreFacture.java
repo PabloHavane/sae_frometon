@@ -63,11 +63,6 @@ public class VotreFacture extends JFrame {
 		lblTitre.setToolTipText("");
 		panelTitre.add(lblTitre);
 
-		JLabel lblIconeFacture = new JLabel("");
-		lblIconeFacture.setIcon(new ImageIcon(
-				"C:\\Users\\chari\\AppData\\Local\\Microsoft\\Windows\\INetCache\\IE\\F3GSCC8E\\Image_Pasted_2023-23-05_at_16.44.14[1].png"));
-		panelTitre.add(lblIconeFacture);
-
 		JScrollPane scrollPane = new JScrollPane();
 		this.contentPane.add(scrollPane, BorderLayout.CENTER);
 
